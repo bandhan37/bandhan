@@ -29,19 +29,22 @@
       --mx: 50%;
       --my: 50%;
     }
+
+    /* Improved light theme */
     [data-theme="light"] {
-      --bg: #f6f9ff;
-      --surface: #ffffffbf;
-      --panel: #ffffffcc;
-      --text: #0b1423;
-      --muted: #587089;
-      --line: #e6edf5;
+      --bg: #f4f7fb;
+      --surface: rgba(255,255,255,0.82);
+      --panel: rgba(255,255,255,0.9);
+      --text: #0b1220;
+      --muted: #3f536b;
+      --line: #dfe8f2;
       --accent: #146ef5;
       --accent-2: #8a59ff;
       --accent-3: #24c36a;
-      --shadow-1: 0 12px 28px rgba(16,24,48,.08);
-      --shadow-2: 0 22px 60px rgba(16,24,48,.12);
+      --shadow-1: 0 8px 28px rgba(20,30,60,.08);
+      --shadow-2: 0 22px 60px rgba(20,30,60,.12);
     }
+
     * { box-sizing: border-box; }
     html, body { height: 100%; }
     html { scroll-behavior: smooth; }
@@ -62,13 +65,14 @@
       width: 120%; height: 120%;
       transform: translate(-50%, -50%) scale(1.12);
       object-fit: cover; will-change: transform, opacity; opacity: 0;
-      /* Added blur for background */
       filter: blur(3px) saturate(1.12) contrast(1.06) brightness(0.58);
       transition: opacity 600ms var(--ease);
     }
     .bg-video video.ready { opacity: 1; }
+
+    /* Stronger readability in light mode */
     [data-theme="light"] .bg-video video {
-      filter: blur(3px) saturate(1.06) contrast(1.03) brightness(0.9);
+      filter: blur(4px) saturate(1.0) contrast(0.95) brightness(1.15);
     }
     .bg-video .bg-tint {
       position: absolute; inset: 0; pointer-events: none;
@@ -78,8 +82,8 @@
     }
     [data-theme="light"] .bg-video .bg-tint {
       background:
-        radial-gradient(70% 60% at 60% 40%, rgba(255,255,255,.10), rgba(255,255,255,.35)),
-        linear-gradient(180deg, rgba(255,255,255,.28), rgba(255,255,255,.08) 40%, rgba(255,255,255,.28));
+        linear-gradient(180deg, rgba(255,255,255,.64), rgba(255,255,255,.34) 40%, rgba(255,255,255,.64)),
+        radial-gradient(60% 50% at 50% 40%, rgba(255,255,255,.06), rgba(255,255,255,.26));
     }
 
     /* Top navbar */
@@ -94,6 +98,7 @@
       border-radius: 999px; backdrop-filter: blur(12px);
       box-shadow: var(--shadow-1); padding: 10px 14px;
     }
+    [data-theme="light"] .nav-inner { background: rgba(255,255,255,0.86); border-color: #e6edf5; }
     .brand { display: flex; align-items: center; gap: 10px; font-weight: 800; letter-spacing: .2px; }
     .brand .logo {
       width: 26px; height: 26px; border-radius: 8px;
@@ -132,10 +137,18 @@
       z-index: 900; transition: width .1s linear;
     }
 
-    /* Left quick menu (hover-to-open only) */
+    /* Left quick menu (hover-to-open only, no click) */
     .side-menu {
       position: fixed; top: 50%; left: 12px; transform: translateY(-50%); z-index: 910;
       display: grid; align-items: center; gap: 10px;
+    }
+    .side-menu::before {
+      /* Larger hover hit area to avoid flicker when moving to drawer */
+      content: "";
+      position: absolute;
+      left: 0; top: -30px; bottom: -30px;
+      width: 320px;
+      pointer-events: none; /* keeps area hoverable without blocking clicks */
     }
     .side-tab {
       appearance: none; border: 1px solid var(--line);
@@ -147,14 +160,17 @@
     }
     .side-tab:hover { transform: translateX(1px) translateY(-1px); }
     .drawer {
-      position: absolute; left: 54px; top: 50%; transform: translateY(-50%) translateX(-12px) scale(.98);
+      position: absolute; left: 52px; top: 50%;
+      transform: translateY(-50%) translateX(-6px) scale(.98);
       opacity: 0; pointer-events: none;
       min-width: 240px; border: 1px solid var(--line); border-radius: 16px;
       background: color-mix(in oklab, var(--panel), transparent 2%); backdrop-filter: blur(12px);
       box-shadow: var(--shadow-2);
       transition: transform var(--dur-2) var(--ease), opacity var(--dur-2) var(--ease);
     }
-    .side-menu:hover .drawer {
+    [data-theme="light"] .drawer { background: rgba(255,255,255,0.86); border-color: #e6edf5; }
+    .side-menu:hover .drawer,
+    .side-menu:focus-within .drawer {
       transform: translateY(-50%) translateX(0) scale(1);
       opacity: 1; pointer-events: auto;
     }
@@ -170,15 +186,20 @@
 
     /* Layout */
     .container { width: min(100% - 32px, var(--container)); margin-inline: auto; }
-    section { padding: 96px 0; }
+    header, section { padding: 96px 0; }
+
+    /* Anchor offset so sections don't hide under sticky nav */
+    header, section { scroll-margin-top: 120px; }
+
     .center { text-align: center; }
     .panel {
       background: color-mix(in oklab, var(--surface), transparent 4%); border: 1px solid var(--line);
       border-radius: var(--radius-lg); box-shadow: var(--shadow-1);
     }
+    [data-theme="light"] .panel, [data-theme="light"] .card { background: rgba(255,255,255,0.86); border-color: #e6edf5; }
 
     /* Header/Hero */
-    header { padding-top: 72px; } /* slightly smaller to make room for top nav */
+    header { padding-top: 84px; } /* room for top nav */
     .hero {
       display: grid; grid-template-columns: 1.2fr 1fr; gap: 36px; align-items: center;
     }
@@ -693,7 +714,7 @@
       addEventListener('mousemove', (e) => { tx = e.clientX; ty = e.clientY; }, { passive: true });
     }
 
-    // Background video ready
+    // Background video ready + reduced motion
     if (bgVideo) {
       bgVideo.addEventListener('loadeddata', () => bgVideo.classList.add('ready'));
       if (prefersReduced) {
