@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="color-scheme" content="dark light" />
+  <meta name="theme-color" content="#070a12" />
   <title>Bandhan Halder — VLSI Portfolio</title>
   <style>
     :root {
@@ -21,25 +22,22 @@
       --shadow-1: 0 12px 28px rgba(0,0,0,.28);
       --shadow-2: 0 22px 60px rgba(0,0,0,.38);
       --ease: cubic-bezier(.2,.7,.2,1);
-      --ease-bounce: cubic-bezier(.2, .9, .2, 1.2);
       --dur-1: 220ms;
       --dur-2: 420ms;
       --dur-3: 900ms;
       --container: 1160px;
-      --mx: 50%;
-      --my: 50%;
     }
 
-    /* Improved light theme */
+    /* Stronger, cleaner light theme */
     [data-theme="light"] {
       --bg: #f4f7fb;
-      --surface: rgba(255,255,255,0.82);
-      --panel: rgba(255,255,255,0.9);
+      --surface: rgba(255,255,255,0.88);
+      --panel: rgba(255,255,255,0.96);
       --text: #0b1220;
       --muted: #3f536b;
       --line: #dfe8f2;
       --accent: #146ef5;
-      --accent-2: #8a59ff;
+      --accent-2: #7a5dff;
       --accent-3: #24c36a;
       --shadow-1: 0 8px 28px rgba(20,30,60,.08);
       --shadow-2: 0 22px 60px rgba(20,30,60,.12);
@@ -54,6 +52,9 @@
       color: var(--text);
       background: var(--bg);
       overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizeLegibility;
     }
 
     /* Fullscreen HD video background with subtle blur + tint */
@@ -72,33 +73,33 @@
 
     /* Stronger readability in light mode */
     [data-theme="light"] .bg-video video {
-      filter: blur(4px) saturate(1.0) contrast(0.95) brightness(1.15);
+      filter: blur(4px) saturate(1.0) contrast(0.92) brightness(1.06);
     }
     .bg-video .bg-tint {
       position: absolute; inset: 0; pointer-events: none;
       background:
-        radial-gradient(70% 60% at 60% 40%, rgba(0,0,0,.0), rgba(0,0,0,.45)),
+        radial-gradient(65% 55% at 60% 40%, rgba(0,0,0,.0), rgba(0,0,0,.45)),
         linear-gradient(180deg, rgba(0,0,0,.22), rgba(0,0,0,.06) 40%, rgba(0,0,0,.28));
     }
     [data-theme="light"] .bg-video .bg-tint {
       background:
-        linear-gradient(180deg, rgba(255,255,255,.64), rgba(255,255,255,.34) 40%, rgba(255,255,255,.64)),
-        radial-gradient(60% 50% at 50% 40%, rgba(255,255,255,.06), rgba(255,255,255,.26));
+        linear-gradient(180deg, rgba(255,255,255,.76), rgba(255,255,255,.42) 50%, rgba(255,255,255,.76)),
+        radial-gradient(60% 50% at 50% 40%, rgba(255,255,255,.08), rgba(255,255,255,.28));
     }
 
-    /* Top navbar */
+    /* Top navbar (desktop + mobile) */
     .top-nav {
-      position: sticky; top: 12px; z-index: 920; display: flex; justify-content: center; padding: 0 16px;
+      position: sticky; top: 12px; z-index: 920; display: flex; justify-content: center; padding: 0 12px;
     }
     .nav-inner {
       width: min(100%, var(--container));
       display: flex; align-items: center; gap: 12px;
-      background: color-mix(in oklab, var(--panel), transparent 10%);
+      background: color-mix(in oklab, var(--panel), transparent 6%);
       border: 1px solid var(--line);
       border-radius: 999px; backdrop-filter: blur(12px);
-      box-shadow: var(--shadow-1); padding: 10px 14px;
+      box-shadow: var(--shadow-1); padding: 10px 12px;
     }
-    [data-theme="light"] .nav-inner { background: rgba(255,255,255,0.86); border-color: #e6edf5; }
+    [data-theme="light"] .nav-inner { background: rgba(255,255,255,0.96); border-color: #e6edf5; }
     .brand { display: flex; align-items: center; gap: 10px; font-weight: 800; letter-spacing: .2px; }
     .brand .logo {
       width: 26px; height: 26px; border-radius: 8px;
@@ -110,7 +111,7 @@
     .navlinks a {
       position: relative; display: inline-flex; align-items: center;
       padding: 8px 12px; border-radius: 999px; text-decoration: none; color: var(--text);
-      font-weight: 600; opacity: .9;
+      font-weight: 600; opacity: .92;
       transition: opacity var(--dur-1) var(--ease), transform var(--dur-1) var(--ease);
     }
     .navlinks a:hover { opacity: 1; transform: translateY(-1px); }
@@ -121,15 +122,37 @@
     }
     .navlinks a:hover::after, .navlinks a.active::after { transform: scaleX(1); }
     .spacer { flex: 1; }
-    .icon-btn {
+    .icon-btn, .mobile-toggle {
       appearance: none; border: 1px solid var(--line); border-radius: 999px;
       padding: 8px 12px; background: color-mix(in oklab, var(--panel), transparent 10%);
       color: var(--text); cursor: pointer; display: inline-flex; align-items: center; gap: 8px;
       transition: transform var(--dur-1) var(--ease), background var(--dur-1) var(--ease), border-color var(--dur-1) var(--ease);
       box-shadow: var(--shadow-1);
     }
-    .icon-btn:hover { transform: translateY(-1px); }
+    .icon-btn:hover, .mobile-toggle:hover { transform: translateY(-1px); }
     .icon-btn svg { width: 18px; height: 18px; }
+
+    /* Mobile nav */
+    .mobile-toggle { display: none; }
+    .mobile-panel {
+      position: fixed; inset: 64px 12px auto 12px; z-index: 919;
+      background: color-mix(in oklab, var(--panel), transparent 2%); backdrop-filter: blur(12px);
+      border: 1px solid var(--line); border-radius: 16px; box-shadow: var(--shadow-2);
+      transform-origin: top center; transform: scaleY(.96); opacity: 0; pointer-events: none;
+      transition: transform var(--dur-2) var(--ease), opacity var(--dur-2) var(--ease);
+    }
+    [data-theme="light"] .mobile-panel { background: rgba(255,255,255,0.96); }
+    .mobile-panel.open { transform: scaleY(1); opacity: 1; pointer-events: auto; }
+    .mobile-links { display: grid; gap: 8px; padding: 14px; }
+    .mobile-links a {
+      padding: 12px 14px; border-radius: 12px; text-decoration: none; color: var(--text);
+      border: 1px solid var(--line); background: color-mix(in oklab, var(--surface), transparent 6%);
+    }
+
+    @media (max-width: 900px) {
+      .navlinks { display: none; }
+      .mobile-toggle { display: inline-flex; }
+    }
 
     /* Scroll progress bar */
     .progress { position: fixed; inset: 0 auto auto 0; height: 3px; width: 0%;
@@ -137,38 +160,45 @@
       z-index: 900; transition: width .1s linear;
     }
 
-    /* Left quick menu (hover-to-open only, no click) */
+    /* Left quick menu (as a bigger vertical tab; hover to open only) */
     .side-menu {
-      position: fixed; top: 50%; left: 12px; transform: translateY(-50%); z-index: 910;
+      position: fixed; top: 50%; left: 10px; transform: translateY(-50%); z-index: 910;
       display: grid; align-items: center; gap: 10px;
     }
+    /* Expanded hover hit-area to avoid flicker */
     .side-menu::before {
-      /* Larger hover hit area to avoid flicker when moving to drawer */
       content: "";
       position: absolute;
-      left: 0; top: -30px; bottom: -30px;
-      width: 320px;
-      pointer-events: none; /* keeps area hoverable without blocking clicks */
+      left: 0; top: -40px; bottom: -40px;
+      width: 360px; /* covers the gap between tab and drawer */
+      pointer-events: auto;
     }
     .side-tab {
-      appearance: none; border: 1px solid var(--line);
-      width: 44px; height: 44px; border-radius: 999px;
-      background: color-mix(in oklab, var(--panel), transparent 10%);
-      color: var(--text); display: grid; place-items: center;
+      display: flex; align-items: center; justify-content: center; gap: 6px;
+      width: 56px; height: 168px; /* bigger tab */
+      border-radius: 999px;
+      background: color-mix(in oklab, var(--panel), transparent 6%);
+      border: 1px solid var(--line);
+      color: var(--text);
+      font-weight: 800; letter-spacing: .5px;
+      writing-mode: vertical-rl; text-orientation: mixed;
       box-shadow: var(--shadow-1);
-      transition: transform var(--dur-1) var(--ease), background var(--dur-1) var(--ease);
+      transition: transform var(--dur-1) var(--ease), background var(--dur-1) var(--ease), border-color var(--dur-1) var(--ease);
+      user-select: none;
     }
     .side-tab:hover { transform: translateX(1px) translateY(-1px); }
+    .side-tab .ico { width: 18px; height: 18px; opacity: .9; }
+
     .drawer {
-      position: absolute; left: 52px; top: 50%;
-      transform: translateY(-50%) translateX(-6px) scale(.98);
+      position: absolute; left: 70px; top: 50%;
+      transform: translateY(-50%) translateX(-10px) scale(.98);
       opacity: 0; pointer-events: none;
-      min-width: 240px; border: 1px solid var(--line); border-radius: 16px;
+      min-width: 250px; border: 1px solid var(--line); border-radius: 16px;
       background: color-mix(in oklab, var(--panel), transparent 2%); backdrop-filter: blur(12px);
       box-shadow: var(--shadow-2);
       transition: transform var(--dur-2) var(--ease), opacity var(--dur-2) var(--ease);
     }
-    [data-theme="light"] .drawer { background: rgba(255,255,255,0.86); border-color: #e6edf5; }
+    [data-theme="light"] .drawer { background: rgba(255,255,255,0.96); border-color: #e6edf5; }
     .side-menu:hover .drawer,
     .side-menu:focus-within .drawer {
       transform: translateY(-50%) translateX(0) scale(1);
@@ -185,7 +215,7 @@
     @media (pointer: coarse) { .side-menu { display: none; } }
 
     /* Layout */
-    .container { width: min(100% - 32px, var(--container)); margin-inline: auto; }
+    .container { width: min(100% - 24px, var(--container)); margin-inline: auto; }
     header, section { padding: 96px 0; }
 
     /* Anchor offset so sections don't hide under sticky nav */
@@ -196,7 +226,7 @@
       background: color-mix(in oklab, var(--surface), transparent 4%); border: 1px solid var(--line);
       border-radius: var(--radius-lg); box-shadow: var(--shadow-1);
     }
-    [data-theme="light"] .panel, [data-theme="light"] .card { background: rgba(255,255,255,0.86); border-color: #e6edf5; }
+    [data-theme="light"] .panel, [data-theme="light"] .card { background: rgba(255,255,255,0.96); border-color: #e6edf5; }
 
     /* Header/Hero */
     header { padding-top: 84px; } /* room for top nav */
@@ -325,7 +355,7 @@
     }
     @media (pointer: coarse) { .cursor { display: none; } }
 
-    /* Accessibility */
+    /* Accessibility / motion */
     @media (prefers-reduced-motion: reduce) {
       html { scroll-behavior: auto; }
     }
@@ -353,6 +383,7 @@
         <div class="logo" aria-hidden="true"></div>
         <span>Bandhan Halder</span>
       </div>
+
       <div class="navlinks">
         <a href="#home">Home</a>
         <a href="#profile">Profile</a>
@@ -362,7 +393,9 @@
         <a href="#leadership">Leadership</a>
         <a href="#contact">Contact</a>
       </div>
+
       <div class="spacer"></div>
+
       <button class="icon-btn" id="themeToggle" aria-label="Toggle theme">
         <svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
           <circle cx="12" cy="12" r="4"></circle>
@@ -370,15 +403,32 @@
         </svg>
         Theme
       </button>
+
+      <button class="mobile-toggle" id="mobileToggle" aria-label="Open menu" aria-expanded="false" aria-controls="mobilePanel">
+        ☰ Menu
+      </button>
+    </div>
+
+    <div class="mobile-panel" id="mobilePanel">
+      <div class="mobile-links">
+        <a href="#home">Home</a>
+        <a href="#profile">Profile</a>
+        <a href="#skills">Skills</a>
+        <a href="#projects">Projects</a>
+        <a href="#education">Education</a>
+        <a href="#leadership">Leadership</a>
+        <a href="#contact">Contact</a>
+      </div>
     </div>
   </nav>
 
-  <!-- Left quick menu (hover to open only) -->
+  <!-- Left vertical tab (hover to open only) -->
   <nav class="side-menu" role="navigation" aria-label="Quick navigation">
     <div class="side-tab" aria-hidden="true" title="Quick menu">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <svg class="ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
         <path d="M3 6h18M3 12h18M3 18h18"/>
       </svg>
+      Menu
     </div>
     <div class="drawer panel">
       <a href="#home">🏠 Home</a>
@@ -670,6 +720,26 @@
       setThemeIcon();
     });
 
+    // Mobile menu toggle
+    const mobileToggle = $('#mobileToggle');
+    const mobilePanel = $('#mobilePanel');
+    mobileToggle?.addEventListener('click', () => {
+      const open = mobilePanel.classList.toggle('open');
+      mobileToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+    mobilePanel?.addEventListener('click', (e) => {
+      if (e.target.matches('a')) {
+        mobilePanel.classList.remove('open');
+        mobileToggle.setAttribute('aria-expanded', 'false');
+      }
+    });
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 900) {
+        mobilePanel?.classList.remove('open');
+        mobileToggle?.setAttribute('aria-expanded', 'false');
+      }
+    });
+
     // Reveal on scroll
     const io = new IntersectionObserver((entries) => {
       entries.forEach(e => {
@@ -694,14 +764,13 @@
       setTimeout(() => r.remove(), 900);
     });
 
-    // Cursor follower + parallax tilt for the background video
+    // Cursor follower + parallax tilt for the background video (desktop only)
     const cursor = $('#cursor');
     const bgVideo = $('#bgVideo');
     let cx = innerWidth / 2, cy = innerHeight / 2, tx = cx, ty = cy;
     const loop = () => {
       cx += (tx - cx) * .14; cy += (ty - cy) * .14;
       if (cursor) cursor.style.transform = `translate(${cx}px, ${cy}px)`;
-      // Slight parallax: move video a few pixels with the cursor
       if (bgVideo) {
         const dx = (cx - innerWidth/2) * 0.02;
         const dy = (cy - innerHeight/2) * 0.02;
