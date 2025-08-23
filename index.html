@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="color-scheme" content="dark light" />
+  <title>Bandhan Halder — VLSI Portfolio</title>
+  <style>
+    :root {
+      --bg: #070a12;
+      --surface: color-mix(in oklab, var(--bg), white 6%);
+      --panel: color-mix(in oklab, var(--bg), white 10%);
+      --text: #eaf2ff;
+      --muted: #9db2c8;
+      --line: color-mix(in oklab, var(--bg), white 14%);
+      --accent: #2cf1ff;
+      --accent-2: #7a7bff;
+      --accent-3: #8aff5a;
+      --radius: 16px;
+      --radius-lg: 22px;
+      --shadow-1: 0 12px 28px rgba(0,0,0,.28);
+      --shadow-2: 0 22px 60px rgba(0,0,0,.38);
+      --ease: cubic-bezier(.2,.7,.2,1);
+      --ease-bounce: cubic-bezier(.2, .9, .2, 1.2);
+      --dur-1: 220ms;
+      --dur-2: 420ms;
+      --dur-3: 900ms;
+      --container: 1160px;
+      --mx: 50%;
+      --my: 50%;
+    }
+    [data-theme="light"] {
+      --bg: #f6f9ff;
+      --surface: #ffffffbf;
+      --panel: #ffffffcc;
+      --text: #0b1423;
+      --muted: #587089;
+      --line: #e6edf5;
+      --accent: #146ef5;
+      --accent-2: #8a59ff;
+      --accent-3: #24c36a;
+      --shadow-1: 0 12px 28px rgba(16,24,48,.08);
+      --shadow-2: 0 22px 60px rgba(16,24,48,.12);
+    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+      color: var(--text);
+      background: var(--bg);
+      overflow-x: hidden;
+    }
+
+    /* Fullscreen HD video background with subtle blur + tint */
+    .bg-video {
+      position: fixed; inset: 0; z-index: -2; overflow: hidden; background: #000;
+    }
+    .bg-video video {
+      position: absolute; top: 50%; left: 50%;
+      width: 120%; height: 120%;
+      transform: translate(-50%, -50%) scale(1.12);
+      object-fit: cover; will-change: transform, opacity; opacity: 0;
+      /* Added blur for background */
+      filter: blur(3px) saturate(1.12) contrast(1.06) brightness(0.58);
+      transition: opacity 600ms var(--ease);
+    }
+    .bg-video video.ready { opacity: 1; }
+    [data-theme="light"] .bg-video video {
+      filter: blur(3px) saturate(1.06) contrast(1.03) brightness(0.9);
+    }
+    .bg-video .bg-tint {
+      position: absolute; inset: 0; pointer-events: none;
+      background:
+        radial-gradient(70% 60% at 60% 40%, rgba(0,0,0,.0), rgba(0,0,0,.45)),
+        linear-gradient(180deg, rgba(0,0,0,.22), rgba(0,0,0,.06) 40%, rgba(0,0,0,.28));
+    }
+    [data-theme="light"] .bg-video .bg-tint {
+      background:
+        radial-gradient(70% 60% at 60% 40%, rgba(255,255,255,.10), rgba(255,255,255,.35)),
+        linear-gradient(180deg, rgba(255,255,255,.28), rgba(255,255,255,.08) 40%, rgba(255,255,255,.28));
+    }
+
+    /* Top navbar */
+    .top-nav {
+      position: sticky; top: 12px; z-index: 920; display: flex; justify-content: center; padding: 0 16px;
+    }
+    .nav-inner {
+      width: min(100%, var(--container));
+      display: flex; align-items: center; gap: 12px;
+      background: color-mix(in oklab, var(--panel), transparent 10%);
+      border: 1px solid var(--line);
+      border-radius: 999px; backdrop-filter: blur(12px);
+      box-shadow: var(--shadow-1); padding: 10px 14px;
+    }
+    .brand { display: flex; align-items: center; gap: 10px; font-weight: 800; letter-spacing: .2px; }
+    .brand .logo {
+      width: 26px; height: 26px; border-radius: 8px;
+      background: radial-gradient(circle at 30% 30%, var(--accent), transparent 60%),
+                  radial-gradient(circle at 70% 70%, var(--accent-2), transparent 60%);
+      filter: saturate(1.2);
+    }
+    .navlinks { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+    .navlinks a {
+      position: relative; display: inline-flex; align-items: center;
+      padding: 8px 12px; border-radius: 999px; text-decoration: none; color: var(--text);
+      font-weight: 600; opacity: .9;
+      transition: opacity var(--dur-1) var(--ease), transform var(--dur-1) var(--ease);
+    }
+    .navlinks a:hover { opacity: 1; transform: translateY(-1px); }
+    .navlinks a::after {
+      content: ""; position: absolute; inset: auto 10px -2px 10px; height: 2px; border-radius: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      transform: scaleX(0); transform-origin: left; transition: transform var(--dur-2) var(--ease);
+    }
+    .navlinks a:hover::after, .navlinks a.active::after { transform: scaleX(1); }
+    .spacer { flex: 1; }
+    .icon-btn {
+      appearance: none; border: 1px solid var(--line); border-radius: 999px;
+      padding: 8px 12px; background: color-mix(in oklab, var(--panel), transparent 10%);
+      color: var(--text); cursor: pointer; display: inline-flex; align-items: center; gap: 8px;
+      transition: transform var(--dur-1) var(--ease), background var(--dur-1) var(--ease), border-color var(--dur-1) var(--ease);
+      box-shadow: var(--shadow-1);
+    }
+    .icon-btn:hover { transform: translateY(-1px); }
+    .icon-btn svg { width: 18px; height: 18px; }
+
+    /* Scroll progress bar */
+    .progress { position: fixed; inset: 0 auto auto 0; height: 3px; width: 0%;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
+      z-index: 900; transition: width .1s linear;
+    }
+
+    /* Left quick menu (hover-to-open only) */
+    .side-menu {
+      position: fixed; top: 50%; left: 12px; transform: translateY(-50%); z-index: 910;
+      display: grid; align-items: center; gap: 10px;
+    }
+    .side-tab {
+      appearance: none; border: 1px solid var(--line);
+      width: 44px; height: 44px; border-radius: 999px;
+      background: color-mix(in oklab, var(--panel), transparent 10%);
+      color: var(--text); display: grid; place-items: center;
+      box-shadow: var(--shadow-1);
+      transition: transform var(--dur-1) var(--ease), background var(--dur-1) var(--ease);
+    }
+    .side-tab:hover { transform: translateX(1px) translateY(-1px); }
+    .drawer {
+      position: absolute; left: 54px; top: 50%; transform: translateY(-50%) translateX(-12px) scale(.98);
+      opacity: 0; pointer-events: none;
+      min-width: 240px; border: 1px solid var(--line); border-radius: 16px;
+      background: color-mix(in oklab, var(--panel), transparent 2%); backdrop-filter: blur(12px);
+      box-shadow: var(--shadow-2);
+      transition: transform var(--dur-2) var(--ease), opacity var(--dur-2) var(--ease);
+    }
+    .side-menu:hover .drawer {
+      transform: translateY(-50%) translateX(0) scale(1);
+      opacity: 1; pointer-events: auto;
+    }
+    .drawer a {
+      display: flex; align-items: center; gap: 10px;
+      padding: 12px 14px; color: var(--text); text-decoration: none;
+      border-bottom: 1px solid var(--line);
+      transition: background var(--dur-1) var(--ease), transform var(--dur-1) var(--ease);
+    }
+    .drawer a:last-child { border-bottom: 0; }
+    .drawer a:hover { background: color-mix(in oklab, var(--surface), transparent 5%); transform: translateX(2px); }
+    @media (pointer: coarse) { .side-menu { display: none; } }
+
+    /* Layout */
+    .container { width: min(100% - 32px, var(--container)); margin-inline: auto; }
+    section { padding: 96px 0; }
+    .center { text-align: center; }
+    .panel {
+      background: color-mix(in oklab, var(--surface), transparent 4%); border: 1px solid var(--line);
+      border-radius: var(--radius-lg); box-shadow: var(--shadow-1);
+    }
+
+    /* Header/Hero */
+    header { padding-top: 72px; } /* slightly smaller to make room for top nav */
+    .hero {
+      display: grid; grid-template-columns: 1.2fr 1fr; gap: 36px; align-items: center;
+    }
+    @media (max-width: 940px) { .hero { grid-template-columns: 1fr; } }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 8px; padding: 6px 10px; border-radius: 999px;
+      background: color-mix(in oklab, var(--surface), transparent 10%); border: 1px solid var(--line);
+      font-size: 12px; letter-spacing: .4px; text-transform: uppercase; opacity: .9;
+    }
+    .title {
+      font-size: clamp(34px, 6vw, 68px); line-height: 1.03; margin: 12px 0 8px; font-weight: 900; letter-spacing: -.4px;
+      background: linear-gradient(180deg, var(--text), color-mix(in oklab, var(--text), transparent 20%));
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+    }
+    .title .electric {
+      background: linear-gradient(90deg, var(--accent), var(--accent-2), var(--accent-3));
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+      filter: drop-shadow(0 8px 26px color-mix(in oklab, var(--accent), transparent 70%));
+    }
+    .lead { font-size: clamp(16px, 2.2vw, 20px); color: var(--muted); max-width: 64ch; }
+    .cta-row { display: flex; gap: 12px; margin-top: 22px; flex-wrap: wrap; }
+
+    .btn {
+      appearance: none; border: 1px solid var(--line); border-radius: 14px; padding: 12px 16px;
+      font-weight: 700; color: var(--text); background: color-mix(in oklab, var(--surface), transparent 8%);
+      cursor: pointer; box-shadow: var(--shadow-1);
+      transition: transform var(--dur-1) var(--ease), border-color var(--dur-1) var(--ease);
+      position: relative; overflow: hidden;
+    }
+    .btn.primary {
+      background: linear-gradient(90deg, color-mix(in oklab, var(--accent), transparent 12%), color-mix(in oklab, var(--accent-2), transparent 12%));
+      color: white; border-color: transparent;
+    }
+    .btn:hover { transform: translateY(-1.5px); }
+    .btn .ripple {
+      position: absolute; border-radius: 999px; pointer-events: none; transform: translate(-50%, -50%);
+      background: color-mix(in oklab, white, transparent 70%);
+      width: 8px; height: 8px; opacity: .7; animation: ripple var(--dur-3) var(--ease) forwards; mix-blend-mode: overlay;
+    }
+    @keyframes ripple { to { opacity: 0; width: 280px; height: 280px; } }
+
+    .hero-visual {
+      position: relative; aspect-ratio: 1 / 1; border-radius: var(--radius-lg);
+      overflow: hidden; border: 1px solid var(--line); background: color-mix(in oklab, var(--surface), transparent 8%);
+      box-shadow: var(--shadow-2); transform-style: preserve-3d;
+    }
+    .hero-visual .grid {
+      position: absolute; inset: 0; background:
+        linear-gradient(transparent 95%, color-mix(in oklab, var(--line), transparent 50%)) 0 0 / 100% 24px,
+        linear-gradient(90deg, transparent 95%, color-mix(in oklab, var(--line), transparent 50%)) 0 0 / 24px 100%;
+      opacity: .25; transform: translateZ(-60px) scale(1.15);
+    }
+    .chipmark {
+      position: absolute; inset: 18px; border-radius: 14px; border: 1px dashed color-mix(in oklab, var(--line), white 10%);
+    }
+
+    /* Sections */
+    .section-title { font-size: clamp(24px, 4vw, 40px); margin: 0 0 8px; letter-spacing: -.3px; }
+    .section-sub { color: var(--muted); margin-bottom: 24px; }
+
+    /* Cards / grids */
+    .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    @media (max-width: 1000px) { .grid3 { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 640px) { .grid3 { grid-template-columns: 1fr; } }
+    .card {
+      position: relative; border-radius: var(--radius); border: 1px solid var(--line);
+      background: color-mix(in oklab, var(--surface), transparent 8%);
+      padding: 18px; min-height: 180px; overflow: hidden; box-shadow: var(--shadow-1);
+      transform-style: preserve-3d; transition: transform var(--dur-2) var(--ease), box-shadow var(--dur-2) var(--ease);
+    }
+    .card:hover { box-shadow: var(--shadow-2); }
+    .card .shine {
+      position: absolute; inset: -40% -40%;
+      background: radial-gradient(200px 200px at var(--px, 50%) var(--py, 50%), color-mix(in oklab, white, transparent 85%), transparent 60%);
+      mix-blend-mode: screen; opacity: 0; transition: opacity var(--dur-1) var(--ease); pointer-events: none;
+    }
+    .card:hover .shine { opacity: .7; }
+    .badge {
+      display: inline-flex; align-items: center; gap: 8px; padding: 6px 10px; border-radius: 999px;
+      border: 1px solid var(--line); background: color-mix(in oklab, var(--surface), transparent 10%); font-weight: 700; font-size: 13px;
+    }
+    .muted { color: var(--muted); }
+    ul.clean { margin: 8px 0 0 0; padding-left: 18px; }
+    ul.clean li { margin: 6px 0; }
+
+    /* Timeline */
+    .timeline { display: grid; gap: 12px; }
+    .tl-item { display: grid; grid-template-columns: 14px 1fr; gap: 12px; align-items: flex-start; }
+    .tl-dot {
+      width: 14px; height: 14px; border-radius: 999px; background: var(--accent);
+      box-shadow: 0 0 0 6px color-mix(in oklab, var(--accent), transparent 85%);
+      margin-top: 6px;
+    }
+    .tl-card { padding: 14px; border: 1px solid var(--line); border-radius: 12px; background: color-mix(in oklab, var(--surface), transparent 8%); }
+    .tl-title { font-weight: 800; }
+    .small { font-size: 13px; color: var(--muted); }
+
+    /* Contact */
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media (max-width: 800px) { .contact-grid { grid-template-columns: 1fr; } }
+    .contact-item {
+      display: flex; align-items: center; gap: 10px; padding: 12px 14px; border: 1px solid var(--line);
+      border-radius: 12px; background: color-mix(in oklab, var(--surface), transparent 8%);
+    }
+    .contact-item a { color: inherit; text-decoration: none; }
+
+    footer {
+      border-top: 1px solid var(--line);
+      background: color-mix(in oklab, var(--surface), transparent 10%);
+      padding: 24px 0; color: var(--muted);
+    }
+
+    /* Reveal on scroll */
+    .reveal { opacity: 0; transform: translateY(14px) scale(.98); }
+    .reveal.in { opacity: 1; transform: none; transition: transform var(--dur-2) var(--ease), opacity var(--dur-2) var(--ease); }
+
+    /* Cursor follower (hidden on touch) */
+    .cursor {
+      position: fixed; top: 0; left: 0; width: 16px; height: 16px; border-radius: 999px;
+      border: 2px solid color-mix(in oklab, var(--accent), transparent 30%);
+      background: radial-gradient(circle at 35% 35%, color-mix(in oklab, var(--accent-2), transparent 70%), transparent 60%);
+      pointer-events: none; z-index: 905; transform: translate(-50%, -50%); mix-blend-mode: lighten; opacity: .8;
+    }
+    @media (pointer: coarse) { .cursor { display: none; } }
+
+    /* Accessibility */
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+    }
+  </style>
+</head>
+<body>
+  <!-- HD video background with subtle blur -->
+  <div class="bg-video" aria-hidden="true">
+    <video id="bgVideo" autoplay muted loop playsinline preload="auto" poster="assets/chip-current-poster.jpg">
+      <source src="assets/chip-current.webm" type="video/webm" />
+      <source src="assets/chip-current.mp4" type="video/mp4" />
+      <!-- fallback example:
+      <source src="https://cdn.coverr.co/videos/coverr-circuit-board-6867/1080p.mp4" type="video/mp4" />
+      -->
+    </video>
+    <div class="bg-tint"></div>
+  </div>
+
+  <div class="progress" id="progress"></div>
+
+  <!-- Top navbar -->
+  <nav class="top-nav" role="navigation" aria-label="Primary">
+    <div class="nav-inner">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <span>Bandhan Halder</span>
+      </div>
+      <div class="navlinks">
+        <a href="#home">Home</a>
+        <a href="#profile">Profile</a>
+        <a href="#skills">Skills</a>
+        <a href="#projects">Projects</a>
+        <a href="#education">Education</a>
+        <a href="#leadership">Leadership</a>
+        <a href="#contact">Contact</a>
+      </div>
+      <div class="spacer"></div>
+      <button class="icon-btn" id="themeToggle" aria-label="Toggle theme">
+        <svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <circle cx="12" cy="12" r="4"></circle>
+          <path d="M12 3v2M12 19v2M3 12h2M19 12h2M5 5l1.5 1.5M17.5 17.5 19 19M5 19l1.5-1.5M17.5 6.5 19 5"/>
+        </svg>
+        Theme
+      </button>
+    </div>
+  </nav>
+
+  <!-- Left quick menu (hover to open only) -->
+  <nav class="side-menu" role="navigation" aria-label="Quick navigation">
+    <div class="side-tab" aria-hidden="true" title="Quick menu">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M3 6h18M3 12h18M3 18h18"/>
+      </svg>
+    </div>
+    <div class="drawer panel">
+      <a href="#home">🏠 Home</a>
+      <a href="#profile">👤 Profile</a>
+      <a href="#skills">🛠️ Skills</a>
+      <a href="#projects">📐 Projects</a>
+      <a href="#education">🎓 Education</a>
+      <a href="#leadership">🧭 Leadership</a>
+      <a href="#contact">✉️ Contact</a>
+    </div>
+  </nav>
+
+  <!-- Cursor follower -->
+  <div class="cursor" id="cursor" aria-hidden="true"></div>
+
+  <header id="home">
+    <div class="container">
+      <div class="hero">
+        <div class="hero-copy">
+          <span class="eyebrow reveal">VLSI • RTL → GDSII • 45–90nm</span>
+          <h1 class="title reveal">
+            Bandhan Halder — <span class="electric">Aspiring VLSI Engineer</span>
+          </h1>
+          <p class="lead reveal">
+            Detail‑oriented, analytical, and hands‑on with Cadence flows. From SRAM cells to full‑chip automation, I love turning circuits into silicon with clean DRC/LVS and tight timing.
+          </p>
+          <div class="cta-row reveal">
+            <a class="btn primary" href="#projects">View projects</a>
+            <a class="btn" href="mailto:bandhanhalder.office@gmail.com">Email me</a>
+            <a class="btn" href="tel:+8801823307328">Call: +8801823307328</a>
+          </div>
+        </div>
+        <div class="hero-visual reveal" aria-hidden="true">
+          <div class="grid"></div>
+          <div class="chipmark"></div>
+          <svg viewBox="0 0 400 400" style="position:absolute; inset:0;">
+            <defs>
+              <linearGradient id="grad" x1="0" x2="1">
+                <stop offset="0" stop-color="#2cf1ff"/><stop offset="1" stop-color="#8aff5a"/>
+              </linearGradient>
+              <filter id="glo2"><feGaussianBlur stdDeviation="2.5"/></filter>
+            </defs>
+            <rect x="60" y="60" width="280" height="200" rx="14" fill="none" stroke="url(#grad)" stroke-width="2" opacity=".65"/>
+            <circle cx="110" cy="140" r="8" fill="#2cf1ff" filter="url(#glo2)"/>
+            <circle cx="200" cy="140" r="8" fill="#8aff5a" filter="url(#glo2)"/>
+            <circle cx="290" cy="140" r="8" fill="#7a7bff" filter="url(#glo2)"/>
+            <path d="M110 140 H200 H290" stroke="url(#grad)" stroke-width="2" stroke-dasharray="8 14">
+              <animate attributeName="stroke-dashoffset" values="0;-200" dur="4s" repeatCount="indefinite"/>
+            </path>
+            <path d="M110 180 H290" stroke="url(#grad)" stroke-width="2" stroke-dasharray="10 18">
+              <animate attributeName="stroke-dashoffset" values="0;-200" dur="3.2s" repeatCount="indefinite"/>
+            </path>
+            <path d="M110 220 H290" stroke="url(#grad)" stroke-width="2" stroke-dasharray="12 14">
+              <animate attributeName="stroke-dashoffset" values="0;-220" dur="2.6s" repeatCount="indefinite"/>
+            </path>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section id="profile">
+      <div class="container">
+        <div class="panel reveal">
+          <h2 class="section-title">Profile</h2>
+          <p class="muted">
+            I am an aspiring VLSI engineer with a strong academic foundation in VLSI design, further enhanced by my VLSI 2 coursework. I am a detail-oriented and analytical problem solver with demonstrated leadership and technical skills, as evidenced by my successful projects. I am seeking a challenging position in the VLSI industry, where I can apply my knowledge and project experience to contribute to innovative semiconductor solutions while advancing my career in this dynamic field.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="skills">
+      <div class="container">
+        <h2 class="section-title reveal center">Technical Skills</h2>
+        <p class="section-sub reveal center">Design tools, programming, and platforms I work with.</p>
+        <div class="grid3">
+          <article class="card reveal">
+            <div class="shine"></div>
+            <div class="badge">Programming</div>
+            <ul class="clean muted">
+              <li>C</li>
+              <li>C++</li>
+            </ul>
+          </article>
+          <article class="card reveal">
+            <div class="shine"></div>
+            <div class="badge">Software</div>
+            <ul class="clean muted">
+              <li>Cadence Virtuoso, Innovus Origin</li>
+              <li>Matlab, PSpice, AutoCAD</li>
+              <li>Code::Blocks, Proteus</li>
+            </ul>
+          </article>
+          <article class="card reveal">
+            <div class="shine"></div>
+            <div class="badge">Operating Systems</div>
+            <ul class="clean muted">
+              <li>Windows</li>
+              <li>Linux (Bash Command & Scripting)</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="projects">
+      <div class="container">
+        <h2 class="section-title reveal center">Project Experience</h2>
+        <p class="section-sub reveal center">Hands-on designs across memory cells and digital systems.</p>
+        <div class="grid3">
+          <article class="card reveal">
+            <div class="shine"></div>
+            <div class="badge">10T SRAM Cell</div>
+            <ul class="clean muted">
+              <li>Built schematic and layout using paper reference in Cadence Virtuoso.</li>
+              <li>Calculated power and area; no LVS and DRC errors.</li>
+              <li>Delivered improved area utilization while meeting design rules.</li>
+            </ul>
+          </article>
+          <article class="card reveal">
+            <div class="shine"></div>
+            <div class="badge">Advanced Home Automation & Security</div>
+            <ul class="clean muted">
+              <li>Designed a full chip from RTL to stream-out using ModelSim, Genus, Innovus.</li>
+              <li>Achieved functional design closure across the flow.</li>
+            </ul>
+          </article>
+          <article class="card reveal">
+            <div class="shine"></div>
+            <div class="badge">Additional Project — Phase Frequency Detector</div>
+            <ul class="clean muted">
+              <li>Compares phase/frequency of two inputs and outputs difference.</li>
+              <li>Tools: Cadence Virtuoso & ADE L.</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="education">
+      <div class="container">
+        <h2 class="section-title reveal center">Education</h2>
+        <p class="section-sub reveal center">Academic foundation in Electrical & Electronic Engineering.</p>
+        <div class="timeline panel reveal">
+          <div class="tl-item">
+            <div class="tl-dot"></div>
+            <div class="tl-card">
+              <div class="tl-title">Ahsanullah University of Science & Technology (AUST) — 2024</div>
+              <div class="small">Bachelor of Science in Electrical & Electronic Engineering</div>
+              <ul class="clean muted">
+                <li>Thesis: Analysis of Structural & Electrical Properties of Samarium Doped Bismuth Ferrite</li>
+                <li>CGPA: 3.686/4.00</li>
+                <li>4 Students Scholarship within 8 semesters</li>
+              </ul>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot"></div>
+            <div class="tl-card">
+              <div class="tl-title">Government Science College — 2019</div>
+              <div class="small">Higher Secondary Certificate</div>
+              <ul class="clean muted"><li>GPA: 5.00/5.00</li></ul>
+            </div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-dot"></div>
+            <div class="tl-card">
+              <div class="tl-title">Dhanmondi Govt. Boys' High School — 2017</div>
+              <div class="small">Secondary School Certificate</div>
+              <ul class="clean muted"><li>GPA: 5.00/5.00</li></ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="leadership">
+      <div class="container">
+        <h2 class="section-title reveal center">Leadership Experience</h2>
+        <div class="grid3">
+          <article class="card reveal">
+            <div class="shine"></div>
+            <div class="badge">Project Lead — 10T SRAM Design</div>
+            <p class="muted">Directed a team of 4 in designing 10T, 6T, 5T, 4T SRAM cells (90nm).</p>
+            <ul class="clean muted">
+              <li>Ensured DRC/LVS compliance; performed power and area analysis.</li>
+              <li>Delivered within the academic timeline.</li>
+            </ul>
+          </article>
+          <article class="card reveal">
+            <div class="shine"></div>
+            <div class="badge">Team Leader — Advanced Home Automation Full Chip</div>
+            <p class="muted">Led 4 members from RTL to GDSII on 45nm technology.</p>
+            <ul class="clean muted">
+              <li>Coordinated with ModelSim, Genus, Innovus.</li>
+              <li>Achieved functional and timing goals; on‑time delivery.</li>
+            </ul>
+          </article>
+          <article class="card reveal">
+            <div class="shine"></div>
+            <div class="badge">Industry & Courses</div>
+            <ul class="clean muted">
+              <li>Industrial attachment: Neural Semiconductor & BSCL.</li>
+              <li>Courses: VLSI 1 & 2, Digital Electronics, Fabrication & Processing, Electronics 1 & 2, Signal & Systems, Programming.</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <div class="container">
+        <h2 class="section-title reveal center">Contact</h2>
+        <p class="section-sub reveal center">Let’s collaborate on silicon‑proven designs.</p>
+        <div class="contact-grid reveal">
+          <div class="contact-item">
+            📧 <a href="mailto:bandhanhalder.office@gmail.com">bandhanhalder.office@gmail.com</a>
+          </div>
+          <div class="contact-item">
+            📞 <a href="tel:+8801823307328">+8801823307328</a>
+          </div>
+          <div class="contact-item">
+            📍 House: 47, Mirpur, Dhaka
+          </div>
+          <div class="contact-item">
+            🔗 <a href="#projects">See featured projects</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      © <span id="year"></span> Bandhan Halder — VLSI Portfolio. Built for smooth, interactive experiences ⚡
+    </div>
+  </footer>
+
+  <script>
+    // Helpers
+    const $ = (s, r = document) => r.querySelector(s);
+    const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+    const prefersReduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // Scroll progress
+    const progress = $('#progress');
+    const setProgress = () => {
+      const h = document.documentElement;
+      const scrolled = h.scrollTop / (h.scrollHeight - h.clientHeight);
+      progress.style.width = (scrolled * 100).toFixed(2) + '%';
+    };
+    document.addEventListener('scroll', setProgress, { passive: true });
+    setProgress();
+
+    // Scroll spy for top nav
+    const navLinks = $$('.navlinks a');
+    const sections = $$('#home, #profile, #skills, #projects, #education, #leadership, #contact');
+    const onScrollSpy = () => {
+      const y = window.scrollY + 140;
+      let current = sections[0].id;
+      sections.forEach(sec => {
+        const top = sec.getBoundingClientRect().top + window.scrollY;
+        if (y >= top) current = sec.id;
+      });
+      navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === '#' + current));
+    };
+    document.addEventListener('scroll', onScrollSpy, { passive: true });
+    onScrollSpy();
+
+    // Theme toggle (top nav)
+    const root = document.documentElement;
+    const themeToggle = $('#themeToggle');
+    const themeIcon = $('#themeIcon');
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) root.setAttribute('data-theme', savedTheme);
+    const setThemeIcon = () => {
+      const dark = root.getAttribute('data-theme') !== 'light';
+      themeIcon.innerHTML = dark
+        ? '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"/>'
+        : '<circle cx="12" cy="12" r="4"></circle><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5 5l1.5 1.5M17.5 17.5 19 19M5 19l1.5-1.5M17.5 6.5 19 5"/>';
+    };
+    setThemeIcon();
+    themeToggle?.addEventListener('click', () => {
+      const isLight = root.getAttribute('data-theme') === 'light';
+      root.setAttribute('data-theme', isLight ? 'dark' : 'light');
+      localStorage.setItem('theme', isLight ? 'dark' : 'light');
+      setThemeIcon();
+    });
+
+    // Reveal on scroll
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('in');
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.18 });
+    $$('.reveal').forEach(el => io.observe(el));
+
+    // Button ripple
+    document.addEventListener('click', (e) => {
+      const btn = e.target.closest('.btn');
+      if (!btn) return;
+      const r = document.createElement('span');
+      r.className = 'ripple';
+      const rect = btn.getBoundingClientRect();
+      r.style.left = (e.clientX - rect.left) + 'px';
+      r.style.top = (e.clientY - rect.top) + 'px';
+      btn.appendChild(r);
+      setTimeout(() => r.remove(), 900);
+    });
+
+    // Cursor follower + parallax tilt for the background video
+    const cursor = $('#cursor');
+    const bgVideo = $('#bgVideo');
+    let cx = innerWidth / 2, cy = innerHeight / 2, tx = cx, ty = cy;
+    const loop = () => {
+      cx += (tx - cx) * .14; cy += (ty - cy) * .14;
+      if (cursor) cursor.style.transform = `translate(${cx}px, ${cy}px)`;
+      // Slight parallax: move video a few pixels with the cursor
+      if (bgVideo) {
+        const dx = (cx - innerWidth/2) * 0.02;
+        const dy = (cy - innerHeight/2) * 0.02;
+        bgVideo.style.transform = `translate(-50%, -50%) translate(${dx}px, ${dy}px) scale(1.12)`;
+      }
+      requestAnimationFrame(loop);
+    };
+    if (!prefersReduced && matchMedia('(pointer:fine)').matches) {
+      requestAnimationFrame(loop);
+      addEventListener('mousemove', (e) => { tx = e.clientX; ty = e.clientY; }, { passive: true });
+    }
+
+    // Background video ready
+    if (bgVideo) {
+      bgVideo.addEventListener('loadeddata', () => bgVideo.classList.add('ready'));
+      if (prefersReduced) {
+        try { bgVideo.pause(); } catch (e) {}
+        bgVideo.removeAttribute('autoplay');
+      }
+    }
+
+    // Footer year
+    $('#year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
