@@ -33,7 +33,7 @@
     }
     p{margin:0 0 12px}
 
-    /* Background video */
+    /* Background video (same look in light/dark) */
     .bg-video{position:fixed;inset:0;z-index:-2;overflow:hidden;background:#000;contain:strict}
     .bg-video video{
       position:absolute;top:50%;left:50%;width:120%;height:120%;transform:translate(-50%,-50%) scale(1.12);
@@ -41,17 +41,12 @@
       transition:opacity .6s var(--ease), transform .3s var(--ease)
     }
     .bg-video video.ready{opacity:1}
-    [data-theme=light] .bg-video video{filter:blur(4px) saturate(1) contrast(.92) brightness(1.06)}
+    /* Keep tint dark in light mode too */
     .bg-video .bg-tint{
       position:absolute;inset:0;pointer-events:none;
       background:
         radial-gradient(65% 55% at 60% 40%,rgba(0,0,0,0),rgba(0,0,0,.45)),
         linear-gradient(180deg,rgba(0,0,0,.22),rgba(0,0,0,.06) 40%,rgba(0,0,0,.28))
-    }
-    [data-theme=light] .bg-video .bg-tint{
-      background:
-        linear-gradient(180deg,rgba(255,255,255,.76),rgba(255,255,255,.42) 50%,rgba(255,255,255,.76)),
-        radial-gradient(60% 50% at 50% 40%,rgba(255,255,255,.08),rgba(255,255,255,.28))
     }
 
     /* Top nav */
@@ -100,7 +95,7 @@
     .mobile-links a{padding:12px 14px;border-radius:12px;text-decoration:none;color:var(--text);border:1px solid var(--line);background:color-mix(in oklab,var(--surface),transparent 6%)}
     @media (max-width:900px){.navlinks{display:none}#themeToggle{display:none}.mobile-toggle{display:none}}
 
-    /* Scroll progress */
+    /* Progress */
     .progress{position:fixed;inset:0 auto auto 0;height:3px;width:0;background:linear-gradient(90deg,var(--accent),var(--accent-2));z-index:900;transition:width .1s linear}
 
     /* Desktop side menu */
@@ -139,11 +134,28 @@
     header,section{padding:96px 0;scroll-margin-top:120px}
     .center{text-align:center}
     .panel{
-      background:color-mix(in oklab,var(--surface),transparent 4%);border:1px solid var(--line);border-radius:var(--radius-lg);box-shadow:var(--shadow-1);
+      position:relative;background:color-mix(in oklab,var(--surface),transparent 4%);border:1px solid var(--line);border-radius:var(--radius-lg);box-shadow:var(--shadow-1);
       padding:26px 24px;content-visibility:auto;contain-intrinsic-size:500px 400px;transition:transform var(--dur-2) var(--ease), box-shadow var(--dur-2) var(--ease), background-color .2s var(--ease)
     }
-    .panel:hover{transform:translateY(-2px)}
     [data-theme=light] .panel,[data-theme=light] .card{background:rgba(255,255,255,.96);border-color:#e6edf5}
+
+    /* Pop hover effect (panels, cards, timeline, contacts) */
+    :is(.panel,.card,.tl-card,.contact-item){position:relative;overflow:hidden}
+    :is(.panel,.card,.tl-card,.contact-item)::after{
+      content:"";position:absolute;inset:-1px;border-radius:inherit;pointer-events:none;
+      background:
+        radial-gradient(280px 160px at var(--hx,50%) var(--hy,50%), color-mix(in oklab,var(--accent),transparent 85%), transparent 60%),
+        linear-gradient(90deg, color-mix(in oklab,var(--accent),transparent 92%), color-mix(in oklab,var(--accent-2),transparent 92%));
+      opacity:0;transition:opacity var(--dur-2) var(--ease)
+    }
+    /* Box-ring glow */
+    :is(.panel,.tl-card,.contact-item):hover,:is(.panel,.tl-card,.contact-item):focus-within{
+      transform:translateY(-6px) scale(1.02);box-shadow:var(--shadow-2)
+    }
+    :is(.panel,.card,.tl-card,.contact-item):hover::after,:is(.panel,.card,.tl-card,.contact-item):focus-within::after{opacity:1}
+    /* Cards keep tilt transform; just add glow/shadow */
+    .card{transition:box-shadow var(--dur-2) var(--ease), background-color .2s var(--ease)}
+    .card:hover{box-shadow:var(--shadow-2)}
 
     /* Hero */
     header{padding-top:84px}
@@ -184,22 +196,19 @@
     .grid3{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:28px}
     @media (max-width:740px){.grid3{grid-template-columns:1fr}}
     .card{
-      position:relative;border-radius:var(--radius);border:1px solid var(--line);background:color-mix(in oklab,var(--surface),transparent 8%);padding:26px;min-height:260px;overflow:hidden;box-shadow:var(--shadow-1);
-      transition:transform var(--dur-2) var(--ease), box-shadow var(--dur-2) var(--ease), background-color .2s var(--ease)
+      position:relative;border-radius:var(--radius);border:1px solid var(--line);background:color-mix(in oklab,var(--surface),transparent 8%);padding:26px;min-height:260px;overflow:hidden;box-shadow:var(--shadow-1)
     }
-    .card:hover{transform:translateY(-4px);box-shadow:var(--shadow-2)}
     .card.tilt{perspective:800px;transform-style:preserve-3d}
     .card .badge{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:999px;border:1px solid var(--line);background:color-mix(in oklab,var(--surface),transparent 10%);font-weight:700;font-size:13px;margin-bottom:10px}
     .muted{color:var(--muted)}
     ul.clean{margin:8px 0 0 0;padding-left:20px}
     ul.clean li{margin:8px 0}
 
-    /* Timeline (Experience) – ample spacing, no parallax */
+    /* Timeline */
     .timeline{display:grid;gap:22px}
     .tl-item{display:grid;grid-template-columns:16px 1fr;gap:16px;align-items:flex-start}
     .tl-dot{width:16px;height:16px;border-radius:999px;background:var(--accent);box-shadow:0 0 0 6px color-mix(in oklab,var(--accent),transparent 85%);margin-top:8px}
     .tl-card{padding:26px 24px;border:1px solid var(--line);border-radius:14px;background:color-mix(in oklab,var(--surface),transparent 8%);transition:transform var(--dur-2) var(--ease), box-shadow var(--dur-2) var(--ease)}
-    .tl-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-2)}
     .tl-title{font-weight:800;margin-bottom:6px}
     .small{font-size:13px;color:var(--muted);margin-bottom:8px}
     .tl-card ul{margin-top:10px}
@@ -629,7 +638,7 @@
       btn.appendChild(r); setTimeout(()=>r.remove(),900)
     });
 
-    // Email copy to clipboard
+    // Email copy to clipboard + toast
     const toastEl=$('#toast');
     function showToast(msg){ toastEl.textContent=msg; toastEl.classList.add('show'); clearTimeout(showToast._t); showToast._t=setTimeout(()=>toastEl.classList.remove('show'),2200) }
     document.addEventListener('click',async e=>{
@@ -639,7 +648,7 @@
       if(el.tagName.toLowerCase()==='a' && el.href.startsWith('mailto:')) location.href=el.href;
     });
 
-    // Back to top FAB
+    // Back to top
     const toTop=$('#toTop'); const onScrollTop=()=>{ toTop.classList.toggle('show', window.scrollY>700) };
     document.addEventListener('scroll', onScrollTop, {passive:true}); onScrollTop();
     toTop?.addEventListener('click',()=>window.scrollTo({top:0,behavior:prefersReduced?'auto':'smooth'}));
@@ -653,7 +662,7 @@
     };
     if(!prefersReduced && matchMedia('(pointer:fine)').matches){ requestAnimationFrame(loop); addEventListener('mousemove',e=>{tx=e.clientX;ty=e.clientY},{passive:true}) }
 
-    // Parallax (clamped) for hero elements only
+    // Parallax (hero only)
     const parEls=$$('[data-parallax]'); let ticking=false;
     const runParallax=()=>{ const vhMid=scrollY+innerHeight*.5; parEls.forEach(el=>{ const speed=parseFloat(el.dataset.parallax||'0.03'); const rect=el.getBoundingClientRect(); const elMid=scrollY+rect.top+rect.height*.5; const delta=(elMid-vhMid)*speed; const dy=Math.max(-24,Math.min(24,-delta)); el.style.transform=`translate3d(0,${dy.toFixed(1)}px,0)` }); ticking=false };
     const onScrollPar=()=>{ if(!ticking){ ticking=true; requestAnimationFrame(runParallax) } };
@@ -672,7 +681,7 @@
       });
     }
 
-    // Nav scroll spy + animated indicator
+    // Nav scroll spy + indicator
     const navLinks=$$('#navlinks a'), navIndicator=$('#navIndicator'), sections=$$('#home,#profile,#experience,#skills,#projects,#education,#leadership,#contact');
     function updateActive(){
       const y=scrollY+140; let current=sections[0].id;
@@ -685,6 +694,20 @@
     // Background video ready + reduced motion
     bgVideo?.addEventListener('loadeddata',()=>bgVideo.classList.add('ready'));
     if(prefersReduced){ try{bgVideo.pause()}catch{} bgVideo?.removeAttribute('autoplay') }
+
+    // Hover highlight that follows cursor (for pop effect)
+    const popEls = $$('.panel, .card, .tl-card, .contact-item');
+    if(matchMedia('(pointer:fine)').matches){
+      popEls.forEach(el=>{
+        let raf=0;
+        const move=e=>{
+          const r=el.getBoundingClientRect(); const x=((e.clientX-r.left)/r.width*100).toFixed(2)+'%'; const y=((e.clientY-r.top)/r.height*100).toFixed(2)+'%';
+          if(!raf) raf=requestAnimationFrame(()=>{ el.style.setProperty('--hx',x); el.style.setProperty('--hy',y); raf=0 })
+        };
+        el.addEventListener('mousemove',move);
+        el.addEventListener('mouseleave',()=>{ el.style.removeProperty('--hx'); el.style.removeProperty('--hy') });
+      });
+    }
 
     // Footer year
     $('#year').textContent=new Date().getFullYear();
