@@ -28,7 +28,7 @@
       --container: 1160px;
     }
 
-    /* Stronger, cleaner light theme */
+    /* Strong, clean light theme */
     [data-theme="light"] {
       --bg: #f4f7fb;
       --surface: rgba(255,255,255,0.88);
@@ -70,8 +70,6 @@
       transition: opacity 600ms var(--ease);
     }
     .bg-video video.ready { opacity: 1; }
-
-    /* Stronger readability in light mode */
     [data-theme="light"] .bg-video video {
       filter: blur(4px) saturate(1.0) contrast(0.92) brightness(1.06);
     }
@@ -160,22 +158,21 @@
       z-index: 900; transition: width .1s linear;
     }
 
-    /* Left quick menu (as a bigger vertical tab; hover to open only) */
+    /* Left quick menu (bigger vertical tab; hover to open only) */
     .side-menu {
       position: fixed; top: 50%; left: 10px; transform: translateY(-50%); z-index: 910;
       display: grid; align-items: center; gap: 10px;
     }
-    /* Expanded hover hit-area to avoid flicker */
     .side-menu::before {
       content: "";
       position: absolute;
       left: 0; top: -40px; bottom: -40px;
-      width: 360px; /* covers the gap between tab and drawer */
+      width: 360px;
       pointer-events: auto;
     }
     .side-tab {
       display: flex; align-items: center; justify-content: center; gap: 6px;
-      width: 56px; height: 168px; /* bigger tab */
+      width: 56px; height: 168px;
       border-radius: 999px;
       background: color-mix(in oklab, var(--panel), transparent 6%);
       border: 1px solid var(--line);
@@ -217,9 +214,7 @@
     /* Layout */
     .container { width: min(100% - 24px, var(--container)); margin-inline: auto; }
     header, section { padding: 96px 0; }
-
-    /* Anchor offset so sections don't hide under sticky nav */
-    header, section { scroll-margin-top: 120px; }
+    header, section { scroll-margin-top: 120px; } /* anchor offset */
 
     .center { text-align: center; }
     .panel {
@@ -275,6 +270,12 @@
       position: relative; aspect-ratio: 1 / 1; border-radius: var(--radius-lg);
       overflow: hidden; border: 1px solid var(--line); background: color-mix(in oklab, var(--surface), transparent 8%);
       box-shadow: var(--shadow-2); transform-style: preserve-3d;
+    }
+    /* Profile photo inside hero visual */
+    .hero-visual img.avatar {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%; object-fit: cover;
+      filter: contrast(1.02) saturate(1.02);
     }
     .hero-visual .grid {
       position: absolute; inset: 0; background:
@@ -396,8 +397,20 @@
 
       <div class="spacer"></div>
 
+      <!-- Social icons in top-right (open in new tab) -->
+      <a class="icon-btn" href="https://www.linkedin.com/in/bandhan-halder-b872592a1/" target="_blank" rel="noopener" aria-label="LinkedIn">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true">
+          <path d="M4.98 3.5a2.5 2.5 0 1 1 0 5.001 2.5 2.5 0 0 1 0-5.001ZM4 9h2v12H4zM9 9h2v1.8h.03c.28-.5 1.03-1.8 3.17-1.8 3.39 0 4.02 2.23 4.02 5.13V21h-2v-5.6c0-1.33-.02-3.04-1.86-3.04-1.86 0-2.14 1.45-2.14 2.95V21h-2z"/>
+        </svg>
+      </a>
+      <a class="icon-btn" href="https://www.facebook.com/bdn0506" target="_blank" rel="noopener" aria-label="Facebook">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true">
+          <path d="M13 3h4a1 1 0 0 1 1 1v3h-3a2 2 0 0 0-2 2v3h5l-1 4h-4v6h-4v-6H7v-4h3V9a6 6 0 0 1 3-5z"/>
+        </svg>
+      </a>
+
       <button class="icon-btn" id="themeToggle" aria-label="Toggle theme">
-        <svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+        <svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
           <circle cx="12" cy="12" r="4"></circle>
           <path d="M12 3v2M12 19v2M3 12h2M19 12h2M5 5l1.5 1.5M17.5 17.5 19 19M5 19l1.5-1.5M17.5 6.5 19 5"/>
         </svg>
@@ -418,6 +431,8 @@
         <a href="#education">Education</a>
         <a href="#leadership">Leadership</a>
         <a href="#contact">Contact</a>
+        <a href="https://www.linkedin.com/in/bandhan-halder-b872592a1/" target="_blank" rel="noopener">LinkedIn ↗</a>
+        <a href="https://www.facebook.com/bdn0506" target="_blank" rel="noopener">Facebook ↗</a>
       </div>
     </div>
   </nav>
@@ -457,11 +472,14 @@
           </p>
           <div class="cta-row reveal">
             <a class="btn primary" href="#projects">View projects</a>
-            <a class="btn" href="mailto:bandhanhalder.office@gmail.com">Email me</a>
-            <a class="btn" href="tel:+8801823307328">Call: +8801823307328</a>
+            <a class="btn" href="mailto:bandhanhalder.office@gmail.com">Email</a>
+            <a class="btn" href="https://www.linkedin.com/in/bandhan-halder-b872592a1/" target="_blank" rel="noopener">LinkedIn</a>
+            <a class="btn" href="https://www.facebook.com/bdn0506" target="_blank" rel="noopener">Facebook</a>
           </div>
         </div>
         <div class="hero-visual reveal" aria-hidden="true">
+          <!-- Save your photo as assets/profile.jpg -->
+          <img class="avatar" src="assets/profile.jpg" alt="Portrait photo" loading="eager" decoding="async" fetchpriority="high" />
           <div class="grid"></div>
           <div class="chipmark"></div>
           <svg viewBox="0 0 400 400" style="position:absolute; inset:0;">
@@ -650,13 +668,17 @@
             📧 <a href="mailto:bandhanhalder.office@gmail.com">bandhanhalder.office@gmail.com</a>
           </div>
           <div class="contact-item">
-            📞 <a href="tel:+8801823307328">+8801823307328</a>
+            🔗 <a href="https://www.linkedin.com/in/bandhan-halder-b872592a1/" target="_blank" rel="noopener">
+              LinkedIn — bandhan-halder-b872592a1
+            </a>
+          </div>
+          <div class="contact-item">
+            🔗 <a href="https://www.facebook.com/bdn0506" target="_blank" rel="noopener">
+              Facebook — bdn0506
+            </a>
           </div>
           <div class="contact-item">
             📍 House: 47, Mirpur, Dhaka
-          </div>
-          <div class="contact-item">
-            🔗 <a href="#projects">See featured projects</a>
           </div>
         </div>
       </div>
