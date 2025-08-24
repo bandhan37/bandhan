@@ -6,7 +6,6 @@
   <meta name="color-scheme" content="dark light" />
   <meta name="theme-color" content="#070a12" />
   <title>Bandhan Halder — Assistant VLSI Engineer</title>
-  <!-- Preload your profile image for faster first paint -->
   <link rel="preload" as="image" href="assets/profile.jpg" />
   <style>
     :root {
@@ -237,14 +236,30 @@
       font-size: 12px; letter-spacing: .4px; text-transform: uppercase; opacity: .9;
     }
     .title {
-      font-size: clamp(34px, 6vw, 64px); line-height: 1.03; margin: 12px 0 8px; font-weight: 900; letter-spacing: -.4px;
-      background: linear-gradient(180deg, var(--text), color-mix(in oklab, var(--text), transparent 20%));
-      -webkit-background-clip: text; background-clip: text; color: transparent;
+      margin: 12px 0 8px;
+      line-height: 1.05;
     }
-    .title .electric {
-      background: linear-gradient(90deg, var(--accent), var(--accent-2), var(--accent-3));
+    .title .name {
+      display: block;
+      font-size: clamp(36px, 6vw, 64px);
+      font-weight: 900; letter-spacing: -.4px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-2));
       -webkit-background-clip: text; background-clip: text; color: transparent;
       filter: drop-shadow(0 8px 26px color-mix(in oklab, var(--accent), transparent 70%));
+    }
+    .title .role {
+      display: block;
+      margin-top: 6px;
+      font-size: clamp(16px, 2.2vw, 22px);
+      font-weight: 700;
+      color: #ffffff; /* only white per request */
+      letter-spacing: .2px;
+      text-wrap: balance;
+      text-shadow: 0 1px 2px rgba(0,0,0,.25);
+    }
+    [data-theme="light"] .title .role {
+      color: #ffffff; /* keep white in light mode */
+      text-shadow: 0 1px 2px rgba(0,0,0,.4);
     }
     .lead { font-size: clamp(16px, 2.2vw, 20px); color: var(--muted); max-width: 64ch; }
     .cta-row { display: flex; gap: 12px; margin-top: 22px; flex-wrap: wrap; }
@@ -268,17 +283,17 @@
     }
     @keyframes ripple { to { opacity: 0; width: 280px; height: 280px; } }
 
-    /* Professional portrait card (smaller) */
+    /* Professional portrait card (smaller, cleaner) */
     .hero-visual {
       position: relative;
       width: 100%;
-      max-width: clamp(200px, 30vw, 320px);
+      max-width: clamp(160px, 26vw, 260px); /* smaller than before */
       aspect-ratio: 4 / 5;
       border-radius: 16px;
       overflow: hidden;
       border: 1px solid var(--line);
       background: color-mix(in oklab, var(--surface), transparent 8%);
-      box-shadow: 0 10px 30px rgba(0,0,0,.35), 0 0 0 6px color-mix(in oklab, var(--accent), transparent 92%) inset;
+      box-shadow: 0 10px 30px rgba(0,0,0,.35);
       will-change: transform;
     }
     .hero-visual img.avatar {
@@ -293,35 +308,34 @@
     .section-title { font-size: clamp(24px, 4vw, 40px); margin: 0 0 8px; letter-spacing: -.3px; }
     .section-sub { color: var(--muted); margin-bottom: 24px; }
 
-    /* Cards / grids */
-    .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
-    @media (max-width: 1000px) { .grid3 { grid-template-columns: repeat(2, 1fr); } }
-    @media (max-width: 640px) { .grid3 { grid-template-columns: 1fr; } }
+    /* Bigger cards/grids (per request) */
+    .grid3 { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 20px; }
+    @media (max-width: 740px) { .grid3 { grid-template-columns: 1fr; } }
     .card {
       position: relative; border-radius: var(--radius); border: 1px solid var(--line);
       background: color-mix(in oklab, var(--surface), transparent 8%);
-      padding: 18px; min-height: 180px; overflow: hidden; box-shadow: var(--shadow-1);
+      padding: 22px; min-height: 240px; overflow: hidden; box-shadow: var(--shadow-1);
       transition: transform var(--dur-2) var(--ease), box-shadow var(--dur-2) var(--ease);
       will-change: transform;
     }
     .card:hover { box-shadow: var(--shadow-2); }
     .badge {
-      display: inline-flex; align-items: center; gap: 8px; padding: 6px 10px; border-radius: 999px;
+      display: inline-flex; align-items: center; gap: 8px; padding: 8px 12px; border-radius: 999px;
       border: 1px solid var(--line); background: color-mix(in oklab, var(--surface), transparent 10%); font-weight: 700; font-size: 13px;
     }
     .muted { color: var(--muted); }
     ul.clean { margin: 8px 0 0 0; padding-left: 18px; }
-    ul.clean li { margin: 6px 0; }
+    ul.clean li { margin: 8px 0; }
 
-    /* Timeline */
-    .timeline { display: grid; gap: 12px; }
+    /* Timeline (slightly larger padding) */
+    .timeline { display: grid; gap: 14px; }
     .tl-item { display: grid; grid-template-columns: 14px 1fr; gap: 12px; align-items: flex-start; }
     .tl-dot {
       width: 14px; height: 14px; border-radius: 999px; background: var(--accent);
       box-shadow: 0 0 0 6px color-mix(in oklab, var(--accent), transparent 85%);
       margin-top: 6px;
     }
-    .tl-card { padding: 14px; border: 1px solid var(--line); border-radius: 12px; background: color-mix(in oklab, var(--surface), transparent 8%); }
+    .tl-card { padding: 18px; border: 1px solid var(--line); border-radius: 12px; background: color-mix(in oklab, var(--surface), transparent 8%); }
     .tl-title { font-weight: 800; }
     .small { font-size: 13px; color: var(--muted); }
 
@@ -329,8 +343,9 @@
     .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
     @media (max-width: 800px) { .contact-grid { grid-template-columns: 1fr; } }
     .contact-item {
-      display: flex; align-items: center; gap: 10px; padding: 12px 14px; border: 1px solid var(--line);
+      display: flex; align-items: center; gap: 10px; padding: 14px 16px; border: 1px solid var(--line);
       border-radius: 12px; background: color-mix(in oklab, var(--surface), transparent 8%);
+      min-height: 60px;
     }
     .contact-item a { color: inherit; text-decoration: none; }
 
@@ -462,7 +477,8 @@
         <div class="hero-copy" data-parallax="0.06">
           <span class="eyebrow reveal">IC Physical Implementation • PNR • STA</span>
           <h1 class="title reveal">
-            Bandhan Halder — <span class="electric">Assistant VLSI Engineer</span>
+            <span class="name">Bandhan Halder</span>
+            <span class="role">Assistant VLSI Engineer</span>
           </h1>
           <p class="lead reveal">
             Physical design and timing sign‑off. I work across floorplanning, placement, CTS, routing and timing closure with Synopsys ICC2 and PrimeTime, delivering clean, well‑documented results.
@@ -815,7 +831,7 @@
       setTimeout(() => r.remove(), 900);
     });
 
-    // Cursor follower + stronger parallax for background video (desktop only)
+    // Cursor follower + more parallax for background video (desktop only)
     const cursor = $('#cursor');
     const bgVideo = $('#bgVideo');
     let cx = innerWidth / 2, cy = innerHeight / 2, tx = cx, ty = cy;
@@ -823,8 +839,8 @@
       cx += (tx - cx) * .14; cy += (ty - cy) * .14;
       if (cursor) cursor.style.transform = `translate(${cx}px, ${cy}px)`;
       if (bgVideo) {
-        const dx = (cx - innerWidth/2) * 0.035;  // increased for a touch more parallax
-        const dy = (cy - innerHeight/2) * 0.035;
+        const dx = (cx - innerWidth/2) * 0.045;  // slightly stronger parallax
+        const dy = (cy - innerHeight/2) * 0.045;
         bgVideo.style.transform = `translate(-50%, -50%) translate(${dx}px, ${dy}px) scale(1.12)`;
       }
       requestAnimationFrame(loop);
@@ -834,7 +850,7 @@
       addEventListener('mousemove', (e) => { tx = e.clientX; ty = e.clientY; }, { passive: true });
     }
 
-    // Scroll parallax for elements with data-parallax
+    // Scroll parallax for elements with data-parallax (20% stronger)
     const parEls = $$('[data-parallax]');
     let ticking = false;
     const runParallax = () => {
@@ -843,8 +859,8 @@
         const speed = parseFloat(el.dataset.parallax || '0.04');
         const rect = el.getBoundingClientRect();
         const elMid = window.scrollY + rect.top + rect.height * 0.5;
-        const dy = (elMid - vhMid) * speed;
-        el.style.transform = `translate3d(0, ${-dy.toFixed(2)}px, 0)`; // invert for nicer feel
+        const dy = (elMid - vhMid) * speed * 1.2; // 1.2x for a bit more effect
+        el.style.transform = `translate3d(0, ${-dy.toFixed(2)}px, 0)`;
       });
       ticking = false;
     };
