@@ -159,7 +159,6 @@
       .navlinks { display: none; }
       /* Hide Theme button in nav on phones to avoid overlap; Theme moved to Quick Menu panel */
       #themeToggle { display: none; }
-      /* Hide the old mobile toggle; we'll use the top-right FAB instead */
       .mobile-toggle { display: none; }
     }
 
@@ -320,13 +319,16 @@
     ul.clean { margin: 8px 0 0 0; padding-left: 20px; }
     ul.clean li { margin: 8px 0; }
 
-    /* Timeline with larger padding */
-    .timeline { display: grid; gap: 18px; }
-    .tl-item { display: grid; grid-template-columns: 14px 1fr; gap: 14px; align-items: flex-start; }
-    .tl-dot { width: 14px; height: 14px; border-radius: 999px; background: var(--accent); box-shadow: 0 0 0 6px color-mix(in oklab, var(--accent), transparent 85%); margin-top: 6px; }
-    .tl-card { padding: 24px; border: 1px solid var(--line); border-radius: 12px; background: color-mix(in oklab, var(--surface), transparent 8%); }
-    .tl-title { font-weight: 800; }
-    .small { font-size: 13px; color: var(--muted); }
+    /* Timeline (Experience) — generous spacing, no parallax to prevent overlap */
+    .timeline { display: grid; gap: 22px; }
+    .tl-item { display: grid; grid-template-columns: 16px 1fr; gap: 16px; align-items: flex-start; }
+    .tl-dot { width: 16px; height: 16px; border-radius: 999px; background: var(--accent); box-shadow: 0 0 0 6px color-mix(in oklab, var(--accent), transparent 85%); margin-top: 8px; }
+    .tl-card {
+      padding: 26px 24px; border: 1px solid var(--line); border-radius: 14px; background: color-mix(in oklab, var(--surface), transparent 8%);
+    }
+    .tl-title { font-weight: 800; margin-bottom: 6px; }
+    .small { font-size: 13px; color: var(--muted); margin-bottom: 8px; }
+    .tl-card ul { margin-top: 10px; }
 
     /* Contact */
     .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
@@ -413,7 +415,6 @@
           Theme
         </button>
 
-        <!-- Old mobile toggle hidden on phones (we use FAB) -->
         <button class="mobile-toggle" id="mobileToggle" aria-label="Open menu" aria-expanded="false" aria-controls="mobilePanel">
           ☰ Menu
         </button>
@@ -511,7 +512,7 @@
   <main>
     <section id="profile">
       <div class="container">
-        <div class="panel reveal" data-parallax="0.02">
+        <div class="panel reveal">
           <h2 class="section-title">Profile</h2>
           <!-- EDIT HERE: Profile text -->
           <p class="muted">
@@ -526,7 +527,8 @@
         <h2 class="section-title reveal center">Experience</h2>
         <p class="section-sub reveal center">IC Physical Implementation — Place & Route (PNR), STA, UCIe integration, and sign‑off.</p>
 
-        <div class="timeline panel reveal" data-parallax="0.02">
+        <!-- No parallax here to avoid any visual overlap -->
+        <div class="timeline panel reveal">
           <div class="tl-item">
             <div class="tl-dot"></div>
             <div class="tl-card">
@@ -558,7 +560,7 @@
         </div>
 
         <div class="grid3">
-          <article class="card reveal" data-parallax="0.03">
+          <article class="card reveal">
             <div class="badge">Tooling Expertise</div>
             <!-- EDIT HERE -->
             <ul class="clean muted">
@@ -568,7 +570,7 @@
               <li>UCIe integration (floorplan/constraints)</li>
             </ul>
           </article>
-          <article class="card reveal" data-parallax="0.03">
+          <article class="card reveal">
             <div class="badge">Focus Areas</div>
             <!-- EDIT HERE -->
             <ul class="clean muted">
@@ -577,7 +579,7 @@
               <li>QoR tracking and reporting</li>
             </ul>
           </article>
-          <article class="card reveal" data-parallax="0.03">
+          <article class="card reveal">
             <div class="badge">Strengths</div>
             <!-- EDIT HERE -->
             <ul class="clean muted">
@@ -593,9 +595,9 @@
     <section id="skills">
       <div class="container">
         <h2 class="section-title reveal center">Technical Skills</h2>
-      <p class="section-sub reveal center">Design tools, programming, and platforms I work with.</p>
+        <p class="section-sub reveal center">Design tools, programming, and platforms I work with.</p>
         <div class="grid3">
-          <article class="card reveal" data-parallax="0.02">
+          <article class="card reveal">
             <div class="badge">Physical Design & STA</div>
             <!-- EDIT HERE -->
             <ul class="clean muted">
@@ -605,7 +607,7 @@
               <li>Jira — Project tracking</li>
             </ul>
           </article>
-          <article class="card reveal" data-parallax="0.02">
+          <article class="card reveal">
             <div class="badge">Software & EDA</div>
             <!-- EDIT HERE -->
             <ul class="clean muted">
@@ -614,7 +616,7 @@
               <li>Code::Blocks, Proteus</li>
             </ul>
           </article>
-          <article class="card reveal" data-parallax="0.02">
+          <article class="card reveal">
             <div class="badge">Programming & OS</div>
             <!-- EDIT HERE -->
             <ul class="clean muted">
@@ -631,7 +633,7 @@
         <h2 class="section-title reveal center">Project Experience</h2>
         <p class="section-sub reveal center">Hands-on designs across memory cells and digital systems.</p>
         <div class="grid3">
-          <article class="card reveal" data-parallax="0.02">
+          <article class="card reveal">
             <div class="badge">10T SRAM Cell</div>
             <!-- EDIT HERE -->
             <ul class="clean muted">
@@ -640,7 +642,7 @@
               <li>Improved area utilization while meeting design rules.</li>
             </ul>
           </article>
-          <article class="card reveal" data-parallax="0.02">
+          <article class="card reveal">
             <div class="badge">Advanced Home Automation & Security</div>
             <!-- EDIT HERE -->
             <ul class="clean muted">
@@ -648,7 +650,7 @@
               <li>Achieved functional design closure across the flow.</li>
             </ul>
           </article>
-          <article class="card reveal" data-parallax="0.02">
+          <article class="card reveal">
             <div class="badge">Phase Frequency Detector</div>
             <!-- EDIT HERE -->
             <ul class="clean muted">
@@ -664,7 +666,7 @@
       <div class="container">
         <h2 class="section-title reveal center">Education</h2>
         <p class="section-sub reveal center">Academic foundation in Electrical & Electronic Engineering.</p>
-        <div class="timeline panel reveal" data-parallax="0.02">
+        <div class="timeline panel reveal">
           <!-- EDIT HERE: Education list -->
           <div class="tl-item">
             <div class="tl-dot"></div>
@@ -703,7 +705,7 @@
         <h2 class="section-title reveal center">Leadership</h2>
         <div class="grid3">
           <!-- EDIT HERE: Leadership cards -->
-          <article class="card reveal" data-parallax="0.02">
+          <article class="card reveal">
             <div class="badge">Project Lead — 10T SRAM Design</div>
             <p class="muted">Directed a team of 4 in designing 10T, 6T, 5T, 4T SRAM cells (90nm).</p>
             <ul class="clean muted">
@@ -711,7 +713,7 @@
               <li>Delivered within the academic timeline.</li>
             </ul>
           </article>
-          <article class="card reveal" data-parallax="0.02">
+          <article class="card reveal">
             <div class="badge">Team Leader — Advanced Home Automation Full Chip</div>
             <p class="muted">Led 4 members from RTL to GDSII on 45nm technology.</p>
             <ul class="clean muted">
@@ -719,7 +721,7 @@
               <li>Achieved functional and timing goals; on‑time delivery.</li>
             </ul>
           </article>
-          <article class="card reveal" data-parallax="0.02">
+          <article class="card reveal">
             <div class="badge">Industry & Courses</div>
             <ul class="clean muted">
               <li>Industrial attachment: Neural Semiconductor & BSCL.</li>
@@ -734,7 +736,7 @@
       <div class="container">
         <h2 class="section-title reveal center">Contact</h2>
         <p class="section-sub reveal center">Let’s collaborate on silicon‑proven designs.</p>
-        <div class="contact-grid reveal" data-parallax="0.02">
+        <div class="contact-grid reveal">
           <!-- EDIT HERE: Contact details -->
           <div class="contact-item">📧 <a href="mailto:bandhanhalder.office@gmail.com">bandhanhalder.office@gmail.com</a></div>
           <div class="contact-item">🔗 <a href="https://www.linkedin.com/in/bandhan-halder-b872592a1/" target="_blank" rel="noopener">LinkedIn — bandhan-halder-b872592a1</a></div>
@@ -885,7 +887,7 @@
       addEventListener('mousemove', (e) => { tx = e.clientX; ty = e.clientY; }, { passive: true });
     }
 
-    // Scroll parallax for elements with data-parallax (clamped to avoid overlap)
+    // Scroll parallax — only for hero elements to avoid overlap elsewhere
     const parEls = $$('[data-parallax]');
     let ticking = false;
     const runParallax = () => {
@@ -895,14 +897,13 @@
         const rect = el.getBoundingClientRect();
         const elMid = window.scrollY + rect.top + rect.height * 0.5;
         const delta = (elMid - vhMid) * speed;
-        // Clamp to ±28px to prevent any visual overlap sensation
-        const dy = Math.max(-28, Math.min(28, -delta));
+        const dy = Math.max(-24, Math.min(24, -delta)); // clamp
         el.style.transform = `translate3d(0, ${dy.toFixed(1)}px, 0)`;
       });
       ticking = false;
     };
     const onScroll = () => { if (!ticking) { ticking = true; requestAnimationFrame(runParallax); } };
-    if (!prefersReduced) {
+    if (!prefersReduced && parEls.length) {
       document.addEventListener('scroll', onScroll, { passive: true });
       addEventListener('resize', runParallax);
       runParallax();
