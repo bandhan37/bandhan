@@ -6,6 +6,8 @@
   <meta name="color-scheme" content="dark light" />
   <meta name="theme-color" content="#070a12" />
   <title>Bandhan Halder — VLSI Portfolio</title>
+  <!-- Preload your profile image for faster first paint -->
+  <link rel="preload" as="image" href="assets/profile.jpg" />
   <style>
     :root {
       --bg: #070a12;
@@ -226,7 +228,7 @@
     /* Header/Hero */
     header { padding-top: 84px; } /* room for top nav */
     .hero {
-      display: grid; grid-template-columns: 1.2fr 1fr; gap: 36px; align-items: center;
+      display: grid; grid-template-columns: 1.25fr 0.9fr; gap: 36px; align-items: center;
     }
     @media (max-width: 940px) { .hero { grid-template-columns: 1fr; } }
     .eyebrow {
@@ -267,24 +269,23 @@
     @keyframes ripple { to { opacity: 0; width: 280px; height: 280px; } }
 
     .hero-visual {
-      position: relative; aspect-ratio: 1 / 1; border-radius: var(--radius-lg);
-      overflow: hidden; border: 1px solid var(--line); background: color-mix(in oklab, var(--surface), transparent 8%);
-      box-shadow: var(--shadow-2); transform-style: preserve-3d;
+      position: relative;
+      width: 100%;
+      max-width: 420px;        /* smaller, professional size */
+      aspect-ratio: 4 / 5;     /* portrait ratio */
+      border-radius: 18px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      background: color-mix(in oklab, var(--surface), transparent 8%);
+      box-shadow: var(--shadow-2);
     }
-    /* Profile photo inside hero visual */
+    /* Profile photo only (removed dots/overlays) */
     .hero-visual img.avatar {
       position: absolute; inset: 0;
       width: 100%; height: 100%; object-fit: cover;
+      object-position: 50% 28%; /* keeps face well framed */
       filter: contrast(1.02) saturate(1.02);
-    }
-    .hero-visual .grid {
-      position: absolute; inset: 0; background:
-        linear-gradient(transparent 95%, color-mix(in oklab, var(--line), transparent 50%)) 0 0 / 100% 24px,
-        linear-gradient(90deg, transparent 95%, color-mix(in oklab, var(--line), transparent 50%)) 0 0 / 24px 100%;
-      opacity: .25; transform: translateZ(-60px) scale(1.15);
-    }
-    .chipmark {
-      position: absolute; inset: 18px; border-radius: 14px; border: 1px dashed color-mix(in oklab, var(--line), white 10%);
+      transform: translateZ(0);
     }
 
     /* Sections */
@@ -302,12 +303,6 @@
       transform-style: preserve-3d; transition: transform var(--dur-2) var(--ease), box-shadow var(--dur-2) var(--ease);
     }
     .card:hover { box-shadow: var(--shadow-2); }
-    .card .shine {
-      position: absolute; inset: -40% -40%;
-      background: radial-gradient(200px 200px at var(--px, 50%) var(--py, 50%), color-mix(in oklab, white, transparent 85%), transparent 60%);
-      mix-blend-mode: screen; opacity: 0; transition: opacity var(--dur-1) var(--ease); pointer-events: none;
-    }
-    .card:hover .shine { opacity: .7; }
     .badge {
       display: inline-flex; align-items: center; gap: 8px; padding: 6px 10px; border-radius: 999px;
       border: 1px solid var(--line); background: color-mix(in oklab, var(--surface), transparent 10%); font-weight: 700; font-size: 13px;
@@ -368,9 +363,6 @@
     <video id="bgVideo" autoplay muted loop playsinline preload="auto" poster="assets/chip-current-poster.jpg">
       <source src="assets/chip-current.webm" type="video/webm" />
       <source src="assets/chip-current.mp4" type="video/mp4" />
-      <!-- fallback example:
-      <source src="https://cdn.coverr.co/videos/coverr-circuit-board-6867/1080p.mp4" type="video/mp4" />
-      -->
     </video>
     <div class="bg-tint"></div>
   </div>
@@ -388,6 +380,7 @@
       <div class="navlinks">
         <a href="#home">Home</a>
         <a href="#profile">Profile</a>
+        <a href="#experience">Experience</a>
         <a href="#skills">Skills</a>
         <a href="#projects">Projects</a>
         <a href="#education">Education</a>
@@ -426,6 +419,7 @@
       <div class="mobile-links">
         <a href="#home">Home</a>
         <a href="#profile">Profile</a>
+        <a href="#experience">Experience</a>
         <a href="#skills">Skills</a>
         <a href="#projects">Projects</a>
         <a href="#education">Education</a>
@@ -448,6 +442,7 @@
     <div class="drawer panel">
       <a href="#home">🏠 Home</a>
       <a href="#profile">👤 Profile</a>
+      <a href="#experience">💼 Experience</a>
       <a href="#skills">🛠️ Skills</a>
       <a href="#projects">📐 Projects</a>
       <a href="#education">🎓 Education</a>
@@ -468,41 +463,18 @@
             Bandhan Halder — <span class="electric">Aspiring VLSI Engineer</span>
           </h1>
           <p class="lead reveal">
-            Detail‑oriented, analytical, and hands‑on with Cadence flows. From SRAM cells to full‑chip automation, I love turning circuits into silicon with clean DRC/LVS and tight timing.
+            Detail‑oriented, analytical, and hands‑on with Cadence and Synopsys flows. From SRAM cells to full‑chip implementation, I focus on clean DRC/LVS and solid timing closure.
           </p>
           <div class="cta-row reveal">
-            <a class="btn primary" href="#projects">View projects</a>
+            <a class="btn primary" href="#experience">View experience</a>
             <a class="btn" href="mailto:bandhanhalder.office@gmail.com">Email</a>
             <a class="btn" href="https://www.linkedin.com/in/bandhan-halder-b872592a1/" target="_blank" rel="noopener">LinkedIn</a>
             <a class="btn" href="https://www.facebook.com/bdn0506" target="_blank" rel="noopener">Facebook</a>
           </div>
         </div>
         <div class="hero-visual reveal" aria-hidden="true">
-          <!-- Save your photo as assets/profile.jpg -->
+          <!-- Place your photo at assets/profile.jpg -->
           <img class="avatar" src="assets/profile.jpg" alt="Portrait photo" loading="eager" decoding="async" fetchpriority="high" />
-          <div class="grid"></div>
-          <div class="chipmark"></div>
-          <svg viewBox="0 0 400 400" style="position:absolute; inset:0;">
-            <defs>
-              <linearGradient id="grad" x1="0" x2="1">
-                <stop offset="0" stop-color="#2cf1ff"/><stop offset="1" stop-color="#8aff5a"/>
-              </linearGradient>
-              <filter id="glo2"><feGaussianBlur stdDeviation="2.5"/></filter>
-            </defs>
-            <rect x="60" y="60" width="280" height="200" rx="14" fill="none" stroke="url(#grad)" stroke-width="2" opacity=".65"/>
-            <circle cx="110" cy="140" r="8" fill="#2cf1ff" filter="url(#glo2)"/>
-            <circle cx="200" cy="140" r="8" fill="#8aff5a" filter="url(#glo2)"/>
-            <circle cx="290" cy="140" r="8" fill="#7a7bff" filter="url(#glo2)"/>
-            <path d="M110 140 H200 H290" stroke="url(#grad)" stroke-width="2" stroke-dasharray="8 14">
-              <animate attributeName="stroke-dashoffset" values="0;-200" dur="4s" repeatCount="indefinite"/>
-            </path>
-            <path d="M110 180 H290" stroke="url(#grad)" stroke-width="2" stroke-dasharray="10 18">
-              <animate attributeName="stroke-dashoffset" values="0;-200" dur="3.2s" repeatCount="indefinite"/>
-            </path>
-            <path d="M110 220 H290" stroke="url(#grad)" stroke-width="2" stroke-dasharray="12 14">
-              <animate attributeName="stroke-dashoffset" values="0;-220" dur="2.6s" repeatCount="indefinite"/>
-            </path>
-          </svg>
         </div>
       </div>
     </div>
@@ -514,8 +486,70 @@
         <div class="panel reveal">
           <h2 class="section-title">Profile</h2>
           <p class="muted">
-            I am an aspiring VLSI engineer with a strong academic foundation in VLSI design, further enhanced by my VLSI 2 coursework. I am a detail-oriented and analytical problem solver with demonstrated leadership and technical skills, as evidenced by my successful projects. I am seeking a challenging position in the VLSI industry, where I can apply my knowledge and project experience to contribute to innovative semiconductor solutions while advancing my career in this dynamic field.
+            I am an aspiring VLSI engineer with a strong academic foundation in VLSI design, further enhanced by my VLSI‑II coursework. I am a detail‑oriented and analytical problem solver with demonstrated leadership and technical skills. I am seeking a challenging position in the VLSI industry, where I can apply my knowledge and project experience to contribute to innovative semiconductor solutions while advancing my career in this dynamic field.
           </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="experience">
+      <div class="container">
+        <h2 class="section-title reveal center">Experience</h2>
+        <p class="section-sub reveal center">IC Physical Implementation — Place & Route (PNR), STA, and sign‑off support.</p>
+
+        <div class="timeline panel reveal">
+          <div class="tl-item">
+            <div class="tl-dot"></div>
+            <div class="tl-card">
+              <div class="tl-title">Ulkasemi — Assistant Engineer, IC Physical Implementation (PNR)</div>
+              <div class="small">Promoted: Aug 17 — Present</div>
+              <ul class="clean muted">
+                <li>Own timing closure tasks using Synopsys PrimeTime across relevant corners and modes; drive setup/hold fixes and ECO iterations.</li>
+                <li>Contribute to floorplanning, placement, CTS, routing and post‑route optimization in Synopsys ICC2.</li>
+                <li>Track work items and reviews in Jira; communicate risks and status clearly.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="tl-item">
+            <div class="tl-dot"></div>
+            <div class="tl-card">
+              <div class="tl-title">Ulkasemi — Trainee Engineer, IC Physical Implementation (PNR)</div>
+              <div class="small">Joined: Feb 17 — Aug 16</div>
+              <ul class="clean muted">
+                <li>Assisted with PNR flow bring‑up in ICC2: constraint validation, congestion analysis, PDN checks.</li>
+                <li>Generated and analyzed PrimeTime reports; triaged constraint and timing violations (STA).</li>
+                <li>Documented flow steps and best practices; coordinated tasks via Jira.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid3">
+          <article class="card reveal">
+            <div class="badge">Tooling Expertise</div>
+            <ul class="clean muted">
+              <li>Synopsys ICC2 (PNR)</li>
+              <li>Synopsys PrimeTime (STA)</li>
+              <li>Jira (task and issue tracking)</li>
+            </ul>
+          </article>
+          <article class="card reveal">
+            <div class="badge">Focus Areas</div>
+            <ul class="clean muted">
+              <li>Timing closure (setup/hold, constraints debug)</li>
+              <li>Physical design optimization and ECOs</li>
+              <li>Quality of Results (QoR) tracking and reporting</li>
+            </ul>
+          </article>
+          <article class="card reveal">
+            <div class="badge">Strengths</div>
+            <ul class="clean muted">
+              <li>Analytical problem solving</li>
+              <li>Clear documentation and collaboration</li>
+              <li>Ownership and continuous improvement</li>
+            </ul>
+          </article>
         </div>
       </div>
     </section>
@@ -526,16 +560,15 @@
         <p class="section-sub reveal center">Design tools, programming, and platforms I work with.</p>
         <div class="grid3">
           <article class="card reveal">
-            <div class="shine"></div>
-            <div class="badge">Programming</div>
+            <div class="badge">Physical Design & STA</div>
             <ul class="clean muted">
-              <li>C</li>
-              <li>C++</li>
+              <li>Synopsys ICC2 — PNR</li>
+              <li>Synopsys PrimeTime — STA</li>
+              <li>Jira — Project tracking</li>
             </ul>
           </article>
           <article class="card reveal">
-            <div class="shine"></div>
-            <div class="badge">Software</div>
+            <div class="badge">Software & EDA</div>
             <ul class="clean muted">
               <li>Cadence Virtuoso, Innovus Origin</li>
               <li>Matlab, PSpice, AutoCAD</li>
@@ -543,11 +576,10 @@
             </ul>
           </article>
           <article class="card reveal">
-            <div class="shine"></div>
-            <div class="badge">Operating Systems</div>
+            <div class="badge">Programming & OS</div>
             <ul class="clean muted">
-              <li>Windows</li>
-              <li>Linux (Bash Command & Scripting)</li>
+              <li>C, C++</li>
+              <li>Windows, Linux (Bash)</li>
             </ul>
           </article>
         </div>
@@ -560,7 +592,6 @@
         <p class="section-sub reveal center">Hands-on designs across memory cells and digital systems.</p>
         <div class="grid3">
           <article class="card reveal">
-            <div class="shine"></div>
             <div class="badge">10T SRAM Cell</div>
             <ul class="clean muted">
               <li>Built schematic and layout using paper reference in Cadence Virtuoso.</li>
@@ -569,15 +600,13 @@
             </ul>
           </article>
           <article class="card reveal">
-            <div class="shine"></div>
             <div class="badge">Advanced Home Automation & Security</div>
             <ul class="clean muted">
-              <li>Designed a full chip from RTL to stream-out using ModelSim, Genus, Innovus.</li>
+              <li>Designed a full chip from RTL to stream‑out using ModelSim, Genus, Innovus.</li>
               <li>Achieved functional design closure across the flow.</li>
             </ul>
           </article>
           <article class="card reveal">
-            <div class="shine"></div>
             <div class="badge">Additional Project — Phase Frequency Detector</div>
             <ul class="clean muted">
               <li>Compares phase/frequency of two inputs and outputs difference.</li>
@@ -630,7 +659,6 @@
         <h2 class="section-title reveal center">Leadership Experience</h2>
         <div class="grid3">
           <article class="card reveal">
-            <div class="shine"></div>
             <div class="badge">Project Lead — 10T SRAM Design</div>
             <p class="muted">Directed a team of 4 in designing 10T, 6T, 5T, 4T SRAM cells (90nm).</p>
             <ul class="clean muted">
@@ -639,7 +667,6 @@
             </ul>
           </article>
           <article class="card reveal">
-            <div class="shine"></div>
             <div class="badge">Team Leader — Advanced Home Automation Full Chip</div>
             <p class="muted">Led 4 members from RTL to GDSII on 45nm technology.</p>
             <ul class="clean muted">
@@ -648,7 +675,6 @@
             </ul>
           </article>
           <article class="card reveal">
-            <div class="shine"></div>
             <div class="badge">Industry & Courses</div>
             <ul class="clean muted">
               <li>Industrial attachment: Neural Semiconductor & BSCL.</li>
@@ -709,7 +735,7 @@
 
     // Scroll spy for top nav
     const navLinks = $$('.navlinks a');
-    const sections = $$('#home, #profile, #skills, #projects, #education, #leadership, #contact');
+    const sections = $$('#home, #profile, #experience, #skills, #projects, #education, #leadership, #contact');
     const onScrollSpy = () => {
       const y = window.scrollY + 140;
       let current = sections[0].id;
