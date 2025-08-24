@@ -26,7 +26,7 @@
 
       --container:1160px;
     }
-    /* Light mode: less white (softer neutral panels), video stays dark */
+    /* Light mode: less white, same dark video */
     [data-theme=light]{
       --bg:#f1f5fa;
       --surface:rgba(242,246,252,.86);
@@ -94,7 +94,6 @@
     .icon-btn:hover,.mobile-toggle:hover{transform:translateY(-1px)}
     .icon-btn:focus-visible{outline:3px solid color-mix(in oklab,var(--accent),transparent 60%);outline-offset:2px}
     .icon-btn svg{width:18px;height:18px}
-    .inline-gap{display:inline-flex;gap:8px}
 
     /* Mobile nav / FAB */
     .mobile-toggle{display:none}
@@ -112,7 +111,7 @@
     /* Progress */
     .progress{position:fixed;inset:0 auto auto 0;height:3px;width:0;background:linear-gradient(90deg,var(--accent),var(--accent-2));z-index:900;transition:width .1s linear}
 
-    /* Desktop side menu — fixed middle, closer drawer */
+    /* Desktop side menu — centered and closer drawer */
     .side-menu{position:fixed;top:50vh;left:12px;transform:translateY(-50%);z-index:910;display:grid;align-items:center;gap:10px}
     .side-menu::before{content:"";position:absolute;left:0;top:-32px;bottom:-32px;width:220px;pointer-events:auto}
     .side-tab{
@@ -266,7 +265,7 @@
 
   <div class="progress" id="progress"></div>
 
-  <!-- Top nav -->
+  <!-- Top nav (Resume link removed as requested) -->
   <nav class="top-nav" role="navigation" aria-label="Primary">
     <div class="nav-inner">
       <div class="brand"><div class="logo" aria-hidden="true"></div><span>Bandhan Halder</span></div>
@@ -280,7 +279,6 @@
         <a href="#education">Education</a>
         <a href="#leadership">Leadership</a>
         <a href="#contact">Contact</a>
-        <a href="assets/bandhanhalder.pdf" download class="inline-gap" title="Download resume">Resume ⬇</a>
         <span class="nav-indicator" id="navIndicator"></span>
       </div>
 
@@ -307,20 +305,20 @@
       <div class="mobile-links">
         <a href="#home">Home</a><a href="#profile">Profile</a><a href="#experience">Experience</a><a href="#skills">Skills</a>
         <a href="#projects">Projects</a><a href="#education">Education</a><a href="#leadership">Leadership</a><a href="#contact">Contact</a>
-        <a href="assets/bandhanhalder.pdf" download>Resume ⬇</a>
+        <!-- Keeping resume in mobile quick list is optional; remove this line if you want it gone there too -->
+        <a href="assets/resume.pdf" download>Resume ⬇</a>
         <a href="https://www.linkedin.com/in/bandhan-halder-b872592a1/" target="_blank" rel="noopener">LinkedIn ↗</a>
         <a href="https://www.facebook.com/bdn0506" target="_blank" rel="noopener">Facebook ↗</a>
       </div>
     </div>
   </nav>
 
-  <!-- Desktop side quick menu -->
+  <!-- Desktop side quick menu (Resume removed here as requested) -->
   <nav class="side-menu" role="navigation" aria-label="Quick navigation">
     <div class="side-tab" aria-hidden="true" title="Quick menu">Menu</div>
     <div class="drawer panel">
       <a href="#home">🏠 Home</a><a href="#profile">👤 Profile</a><a href="#experience">💼 Experience</a><a href="#skills">🛠️ Skills</a>
       <a href="#projects">📐 Projects</a><a href="#education">🎓 Education</a><a href="#leadership">🧭 Leadership</a><a href="#contact">✉️ Contact</a>
-      <a href="assets/bandhanhalder.pdf" download>📄 Resume (PDF)</a>
     </div>
   </nav>
 
@@ -332,7 +330,7 @@
     <div class="fab-links">
       <a href="#home">Home</a><a href="#profile">Profile</a><a href="#experience">Experience</a><a href="#skills">Skills</a>
       <a href="#projects">Projects</a><a href="#education">Education</a><a href="#leadership">Leadership</a><a href="#contact">Contact</a>
-      <a href="assets/bandhanhalder.pdf" download>Resume ⬇</a>
+      <a href="assets/resume.pdf" download>Resume ⬇</a>
       <a href="https://www.linkedin.com/in/bandhan-halder-b872592a1/" target="_blank" rel="noopener">LinkedIn ↗</a>
       <a href="https://www.facebook.com/bdn0506" target="_blank" rel="noopener">Facebook ↗</a>
       <button id="fabTheme">Toggle theme</button>
@@ -358,7 +356,7 @@
           <p class="lead reveal">Physical design and timing sign‑off. I work across floorplanning, placement, CTS, routing and timing closure with Synopsys ICC2 and PrimeTime, delivering clean, well‑documented results.</p>
           <div class="cta-row reveal">
             <a class="btn primary" href="#experience">View experience</a>
-            <a class="btn" href="assets/bandhanhalder.pdf" download>Download resume</a>
+            <a class="btn" href="assets/resume.pdf" download>Download resume</a>
             <a class="btn" href="mailto:bandhanhalder.office@gmail.com" data-copy="bandhanhalder.office@gmail.com" title="Click to copy email">Email</a>
             <a class="btn" href="https://www.linkedin.com/in/bandhan-halder-b872592a1/" target="_blank" rel="noopener">LinkedIn</a>
           </div>
@@ -553,7 +551,7 @@
           <div class="contact-item">📧 <a href="mailto:bandhanhalder.office@gmail.com" data-copy="bandhanhalder.office@gmail.com" title="Click to copy email">bandhanhalder.office@gmail.com</a></div>
           <div class="contact-item">🔗 <a href="https://www.linkedin.com/in/bandhan-halder-b872592a1/" target="_blank" rel="noopener">LinkedIn — bandhan-halder-b872592a1</a></div>
           <div class="contact-item">🔗 <a href="https://www.facebook.com/bdn0506" target="_blank" rel="noopener">Facebook — bdn0506</a></div>
-          <div class="contact-item inline-gap">📄 <a href="assets/bandhanhalder.pdf" download>Resume (PDF)</a></div>
+          <div class="contact-item">📄 <a href="assets/resume.pdf" download>Resume (PDF)</a></div>
           <div class="contact-item">📍 House: 47, Mirpur, Dhaka</div>
         </div>
       </div>
