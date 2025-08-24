@@ -25,8 +25,10 @@
       --dur-1:180ms;--dur-2:360ms;--dur-3:900ms;
 
       --container:1160px;
+
+      --navH:72px; /* set from JS */
     }
-    /* Light mode: less white, same dark video */
+    /* Light mode: softer neutral panels (video stays dark) */
     [data-theme=light]{
       --bg:#f1f5fa;
       --surface:rgba(242,246,252,.86);
@@ -50,7 +52,7 @@
     }
     p{margin:0 0 12px}
 
-    /* Background video (same look in light/dark) */
+    /* Background video (same look light/dark) */
     .bg-video{position:fixed;inset:0;z-index:-2;overflow:hidden;background:#000;contain:strict}
     .bg-video video{
       position:absolute;top:50%;left:50%;width:120%;height:120%;transform:translate(-50%,-50%) scale(1.12);
@@ -65,9 +67,13 @@
         linear-gradient(180deg,rgba(0,0,0,.22),rgba(0,0,0,.06) 40%,rgba(0,0,0,.28))
     }
 
-    /* Top nav */
-    .top-nav{position:sticky;top:12px;z-index:920;display:flex;justify-content:center;padding:0 12px}
+    /* Fixed top nav (always visible) */
+    .top-nav{
+      position:fixed;top:0;left:0;right:0;z-index:920;display:flex;justify-content:center;padding:8px 12px 0;
+      pointer-events:none; /* allow inner to handle focus/hover */
+    }
     .nav-inner{
+      pointer-events:auto;
       width:min(100%,var(--container));display:flex;align-items:center;gap:12px;flex-wrap:nowrap;
       background:color-mix(in oklab,var(--panel),transparent 6%);border:1px solid var(--line);
       border-radius:999px;backdrop-filter:blur(12px);box-shadow:var(--shadow-1);padding:10px 12px
@@ -79,75 +85,69 @@
       radial-gradient(circle at 70% 70%,var(--accent-2),transparent 60%)}
     .navlinks{position:relative;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
     .navlinks a{
-      position:relative;display:inline-flex;align-items:center;padding:8px 12px;border-radius:999px;color:var(--text);text-decoration:none;font-weight:600;opacity:.92;
-      transition:opacity var(--dur-1) var(--ease), transform var(--dur-1) var(--ease)
+      position:relative;display:inline-flex;align-items:center;padding:8px 12px;border-radius:10px;color:var(--text);text-decoration:none;font-weight:600;opacity:.92;
+      transition:transform var(--dur-1) var(--ease), background var(--dur-1) var(--ease), box-shadow var(--dur-1) var(--ease)
     }
-    .navlinks a:hover{opacity:1;transform:translateY(-1px)}
+    .navlinks a:hover,.navlinks a:focus-visible{
+      transform:translateY(-3px) scale(1.06);
+      background:color-mix(in oklab,var(--surface),transparent 8%);
+      box-shadow:0 10px 26px rgba(0,0,0,.22)
+    }
     .nav-indicator{position:absolute;bottom:0;height:2px;border-radius:2px;background:linear-gradient(90deg,var(--accent),var(--accent-2));transform:translateX(0);width:0;transition:transform .35s var(--ease), width .35s var(--ease);pointer-events:none}
     .spacer{flex:1}
     .actions{display:inline-flex;align-items:center;gap:8px}
-    .icon-btn,.mobile-toggle{
+    .icon-btn{
       appearance:none;border:1px solid var(--line);border-radius:999px;padding:8px 12px;background:color-mix(in oklab,var(--panel),transparent 10%);
       color:var(--text);display:inline-flex;align-items:center;gap:8px;box-shadow:var(--shadow-1);cursor:pointer;
       transition:transform var(--dur-1) var(--ease), background var(--dur-1) var(--ease), border-color var(--dur-1) var(--ease)
     }
-    .icon-btn:hover,.mobile-toggle:hover{transform:translateY(-1px)}
+    .icon-btn:hover{transform:translateY(-1px)}
     .icon-btn:focus-visible{outline:3px solid color-mix(in oklab,var(--accent),transparent 60%);outline-offset:2px}
     .icon-btn svg{width:18px;height:18px}
+    .nav-spacer{height:calc(var(--navH) + 8px)} /* push content below fixed nav */
 
-    /* Mobile nav / FAB */
-    .mobile-toggle{display:none}
+    /* Progress below nav */
+    .progress{position:fixed;left:0;top:var(--navH);height:3px;width:0;background:linear-gradient(90deg,var(--accent),var(--accent-2));z-index:900;transition:width .1s linear}
+
+    /* Mobile FAB quick menu */
+    .mobile-fab{display:none;position:fixed;top:12px;right:12px;z-index:1002;width:50px;height:50px;border-radius:999px;border:1px solid var(--line);background:color-mix(in oklab,var(--panel),transparent 6%);box-shadow:var(--shadow-2);color:var(--text);align-items:center;justify-content:center;cursor:pointer}
+    .mobile-fab svg{width:22px;height:22px}
+    .fab-panel{position:fixed;top:calc(var(--navH) + 8px);right:12px;z-index:1001;width:min(86vw,300px);background:color-mix(in oklab,var(--panel),transparent 2%);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow-2);backdrop-filter:blur(12px);transform:translateY(-8px);opacity:0;pointer-events:none;transition:transform var(--dur-2) var(--ease), opacity var(--dur-2) var(--ease);padding:6px}
+    [data-theme=light] .fab-panel{background:var(--panel)}
+    .fab-panel.open{transform:translateY(0);opacity:1;pointer-events:auto}
+    .fab-links{display:grid;gap:8px;padding:8px}
+    .fab-links a,.fab-links button{
+      padding:12px;border-radius:12px;text-decoration:none;color:var(--text);
+      border:1px solid var(--line);background:color-mix(in oklab,var(--surface),transparent 6%);
+      text-align:left;font:inherit;cursor:pointer;transition:transform var(--dur-1) var(--ease), box-shadow var(--dur-1) var(--ease), background var(--dur-1) var(--ease)
+    }
+    .fab-links a:hover,.fab-links a:focus-visible,.mobile-links a:hover,.mobile-links a:focus-visible{
+      transform:translateY(-2px) scale(1.04);box-shadow:0 10px 26px rgba(0,0,0,.22);background:color-mix(in oklab,var(--surface),transparent 10%)
+    }
+    @media (max-width:900px){.mobile-fab{display:inline-flex}}
+
+    /* Mobile panel (for large tablets if needed) */
     .mobile-panel{
-      position:fixed;inset:64px 12px auto 12px;z-index:919;background:color-mix(in oklab,var(--panel),transparent 2%);backdrop-filter:blur(12px);
+      position:fixed;left:12px;right:12px;top:calc(var(--navH) + 8px);z-index:919;background:color-mix(in oklab,var(--panel),transparent 2%);backdrop-filter:blur(12px);
       border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow-2);transform-origin:top center;transform:scaleY(.96);opacity:0;pointer-events:none;
       transition:transform var(--dur-2) var(--ease), opacity var(--dur-2) var(--ease)
     }
     [data-theme=light] .mobile-panel{background:var(--panel)}
     .mobile-panel.open{transform:scaleY(1);opacity:1;pointer-events:auto}
     .mobile-links{display:grid;gap:8px;padding:14px}
-    .mobile-links a{padding:12px 14px;border-radius:12px;text-decoration:none;color:var(--text);border:1px solid var(--line);background:color-mix(in oklab,var(--surface),transparent 6%)}
-    @media (max-width:900px){.navlinks{display:none}#themeToggle{display:none}.mobile-toggle{display:none}}
-
-    /* Progress */
-    .progress{position:fixed;inset:0 auto auto 0;height:3px;width:0;background:linear-gradient(90deg,var(--accent),var(--accent-2));z-index:900;transition:width .1s linear}
-
-    /* Desktop side menu — centered and closer drawer */
-    .side-menu{position:fixed;top:50vh;left:12px;transform:translateY(-50%);z-index:910;display:grid;align-items:center;gap:10px}
-    .side-menu::before{content:"";position:absolute;left:0;top:-32px;bottom:-32px;width:220px;pointer-events:auto}
-    .side-tab{
-      display:flex;align-items:center;justify-content:center;width:56px;height:168px;border-radius:999px;background:color-mix(in oklab,var(--panel),transparent 6%);
-      border:1px solid var(--line);color:var(--text);font-weight:800;letter-spacing:.5px;writing-mode:vertical-rl;text-orientation:mixed;
-      box-shadow:var(--shadow-1);transition:transform var(--dur-1) var(--ease), background var(--dur-1) var(--ease), border-color var(--dur-1) var(--ease);user-select:none
+    .mobile-links a{
+      padding:12px 14px;border-radius:12px;text-decoration:none;color:var(--text);
+      border:1px solid var(--line);background:color-mix(in oklab,var(--surface),transparent 6%);
+      transition:transform var(--dur-1) var(--ease), box-shadow var(--dur-1) var(--ease), background var(--dur-1) var(--ease)
     }
-    .side-tab:hover{transform:translateX(1px) translateY(-1px)}
-    .drawer{
-      position:absolute;left:60px;top:50%;transform:translateY(-50%) translateX(-4px) scale(.985);opacity:0;pointer-events:none;
-      min-width:240px;border:1px solid var(--line);border-radius:16px;background:color-mix(in oklab,var(--panel),transparent 2%);backdrop-filter:blur(12px);box-shadow:var(--shadow-2);
-      transition:transform var(--dur-2) var(--ease), opacity var(--dur-2) var(--ease);padding:6px
-    }
-    [data-theme=light] .drawer{background:var(--panel);border-color:var(--line)}
-    .side-menu:hover .drawer,.side-menu:focus-within .drawer{transform:translateY(-50%) translateX(0) scale(1);opacity:1;pointer-events:auto}
-    .drawer a{display:flex;align-items:center;gap:10px;padding:12px 14px;color:var(--text);text-decoration:none;border-bottom:1px solid var(--line);border-radius:10px;transition:background var(--dur-1) var(--ease), transform var(--dur-1) var(--ease)}
-    .drawer a:last-child{border-bottom:0}
-    .drawer a:hover{background:color-mix(in oklab,var(--surface),transparent 5%);transform:translateX(2px)}
-    @media (pointer:coarse){.side-menu{display:none}}
-
-    /* Mobile FAB quick menu */
-    .mobile-fab{display:none;position:fixed;top:12px;right:12px;z-index:1002;width:50px;height:50px;border-radius:999px;border:1px solid var(--line);background:color-mix(in oklab,var(--panel),transparent 6%);box-shadow:var(--shadow-2);color:var(--text);align-items:center;justify-content:center;cursor:pointer}
-    .mobile-fab svg{width:22px;height:22px}
-    .fab-panel{position:fixed;top:68px;right:12px;z-index:1001;width:min(86vw,300px);background:color-mix(in oklab,var(--panel),transparent 2%);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow-2);backdrop-filter:blur(12px);transform:translateY(-8px);opacity:0;pointer-events:none;transition:transform var(--dur-2) var(--ease), opacity var(--dur-2) var(--ease);padding:6px}
-    [data-theme=light] .fab-panel{background:var(--panel)}
-    .fab-panel.open{transform:translateY(0);opacity:1;pointer-events:auto}
-    .fab-links{display:grid;gap:8px;padding:8px}
-    .fab-links a,.fab-links button{padding:12px;border-radius:12px;text-decoration:none;color:var(--text);border:1px solid var(--line);background:color-mix(in oklab,var(--surface),transparent 6%);text-align:left;font:inherit;cursor:pointer}
-    @media (max-width:900px){.mobile-fab{display:inline-flex}}
+    @media (max-width:900px){.navlinks{display:none}#themeToggle{display:none}}
 
     /* Layout */
     .container{width:min(100% - 24px,var(--container));margin-inline:auto}
-    header,section{padding:96px 0;scroll-margin-top:120px}
+    header,section{padding:96px 0;scroll-margin-top:calc(var(--navH) + 12px)}
     .center{text-align:center}
 
-    /* Pop hover effect — stronger */
+    /* Pop hover effect — applied to all content boxes */
     :is(.panel,.card,.tl-card,.contact-item){position:relative;overflow:hidden;will-change:transform,box-shadow}
     :is(.panel,.card,.tl-card,.contact-item)::after{
       content:"";position:absolute;inset:-1px;border-radius:inherit;pointer-events:none;
@@ -156,9 +156,7 @@
         linear-gradient(90deg, color-mix(in oklab,var(--accent),transparent 90%), color-mix(in oklab,var(--accent-2),transparent 90%));
       opacity:0;transition:opacity var(--dur-2) var(--ease)
     }
-    :is(.panel,.tl-card,.contact-item):hover,:is(.panel,.tl-card,.contact-item):focus-within{
-      transform:translateY(-8px) scale(1.03);box-shadow:var(--shadow-2)
-    }
+    :is(.panel,.tl-card,.contact-item):hover,:is(.panel,.tl-card,.contact-item):focus-within{transform:translateY(-8px) scale(1.03);box-shadow:var(--shadow-2)}
     .card:hover{transform:translateY(-6px) scale(1.03);box-shadow:var(--shadow-2)}
     :is(.panel,.card,.tl-card,.contact-item):hover::after,:is(.panel,.card,.tl-card,.contact-item):focus-within::after{opacity:1}
 
@@ -170,7 +168,7 @@
     [data-theme=light] .panel,[data-theme=light] .card{background:var(--panel);border-color:var(--line)}
 
     /* Hero */
-    header{padding-top:84px}
+    header{padding-top:calc(var(--navH) + 20px)}
     .hero{display:grid;grid-template-columns:1.35fr .65fr;gap:36px;align-items:center}
     @media (max-width:940px){.hero{grid-template-columns:1fr}}
     .eyebrow{display:inline-flex;align-items:center;gap:8px;padding:6px 10px;border-radius:999px;background:color-mix(in oklab,var(--surface),transparent 10%);border:1px solid var(--line);font-size:12px;letter-spacing:.4px;text-transform:uppercase;opacity:.9}
@@ -263,10 +261,8 @@
     <div class="bg-tint"></div>
   </div>
 
-  <div class="progress" id="progress"></div>
-
-  <!-- Top nav (Resume link removed as requested) -->
-  <nav class="top-nav" role="navigation" aria-label="Primary">
+  <!-- Fixed top nav -->
+  <nav class="top-nav" role="navigation" aria-label="Primary" id="topNav">
     <div class="nav-inner">
       <div class="brand"><div class="logo" aria-hidden="true"></div><span>Bandhan Halder</span></div>
 
@@ -298,29 +294,10 @@
           </svg>
           Theme
         </button>
-        <button class="mobile-toggle" id="mobileToggle" aria-label="Open menu" aria-expanded="false" aria-controls="mobilePanel">☰ Menu</button>
-      </div>
-    </div>
-    <div class="mobile-panel" id="mobilePanel">
-      <div class="mobile-links">
-        <a href="#home">Home</a><a href="#profile">Profile</a><a href="#experience">Experience</a><a href="#skills">Skills</a>
-        <a href="#projects">Projects</a><a href="#education">Education</a><a href="#leadership">Leadership</a><a href="#contact">Contact</a>
-        <!-- Keeping resume in mobile quick list is optional; remove this line if you want it gone there too -->
-        <a href="assets/resume.pdf" download>Resume ⬇</a>
-        <a href="https://www.linkedin.com/in/bandhan-halder-b872592a1/" target="_blank" rel="noopener">LinkedIn ↗</a>
-        <a href="https://www.facebook.com/bdn0506" target="_blank" rel="noopener">Facebook ↗</a>
       </div>
     </div>
   </nav>
-
-  <!-- Desktop side quick menu (Resume removed here as requested) -->
-  <nav class="side-menu" role="navigation" aria-label="Quick navigation">
-    <div class="side-tab" aria-hidden="true" title="Quick menu">Menu</div>
-    <div class="drawer panel">
-      <a href="#home">🏠 Home</a><a href="#profile">👤 Profile</a><a href="#experience">💼 Experience</a><a href="#skills">🛠️ Skills</a>
-      <a href="#projects">📐 Projects</a><a href="#education">🎓 Education</a><a href="#leadership">🧭 Leadership</a><a href="#contact">✉️ Contact</a>
-    </div>
-  </nav>
+  <div class="nav-spacer" aria-hidden="true"></div>
 
   <!-- Mobile FAB -->
   <button class="mobile-fab" id="mobileFab" aria-label="Quick menu" aria-expanded="false" aria-controls="fabPanel">
@@ -330,12 +307,13 @@
     <div class="fab-links">
       <a href="#home">Home</a><a href="#profile">Profile</a><a href="#experience">Experience</a><a href="#skills">Skills</a>
       <a href="#projects">Projects</a><a href="#education">Education</a><a href="#leadership">Leadership</a><a href="#contact">Contact</a>
-      <a href="assets/resume.pdf" download>Resume ⬇</a>
       <a href="https://www.linkedin.com/in/bandhan-halder-b872592a1/" target="_blank" rel="noopener">LinkedIn ↗</a>
       <a href="https://www.facebook.com/bdn0506" target="_blank" rel="noopener">Facebook ↗</a>
       <button id="fabTheme">Toggle theme</button>
     </div>
   </div>
+
+  <div class="progress" id="progress"></div>
 
   <!-- Cursor, toast, back-to-top -->
   <div class="cursor" id="cursor" aria-hidden="true"></div>
@@ -566,7 +544,16 @@
     const $$ = (s, r=document)=>Array.from(r.querySelectorAll(s));
     const prefersReduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-    // Progress
+    // Measure nav height for spacer/progress
+    const topNav = $('#topNav');
+    function setNavHeight(){
+      const h = topNav?.offsetHeight || 68;
+      document.documentElement.style.setProperty('--navH', h+'px');
+    }
+    window.addEventListener('load', setNavHeight);
+    addEventListener('resize', setNavHeight);
+
+    // Progress below nav
     const progress = $('#progress');
     const setProgress = ()=>{ const h=document.documentElement; const scrolled=h.scrollTop/(h.scrollHeight-h.clientHeight); progress.style.width=(scrolled*100).toFixed(2)+'%' };
     document.addEventListener('scroll', setProgress, {passive:true}); setProgress();
@@ -581,11 +568,6 @@
     const setThemeIcon=()=>{ const dark=root.getAttribute('data-theme')!=='light'; themeIcon.innerHTML=dark?'<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z"/>':'<circle cx="12" cy="12" r="4"></circle><path d="M12 3v2M12 19v2M3 12h2M19 12h2M5 5l1.5 1.5M17.5 17.5 19 19M5 19l1.5-1.5M17.5 6.5 19 5"/>' };
     setThemeIcon();
     themeToggle?.addEventListener('click',()=>{const light=root.getAttribute('data-theme')==='light';root.setAttribute('data-theme',light?'dark':'light');localStorage.setItem('theme',light?'dark':'light');setThemeIcon()});
-
-    // Mobile panel (for large tablets; phones use FAB)
-    const mobileToggle=$('#mobileToggle'), mobilePanel=$('#mobilePanel');
-    mobileToggle?.addEventListener('click',()=>{const open=mobilePanel.classList.toggle('open');mobileToggle.setAttribute('aria-expanded',open?'true':'false')});
-    mobilePanel?.addEventListener('click',e=>{if(e.target.matches('a')){mobilePanel.classList.remove('open');mobileToggle.setAttribute('aria-expanded','false')}});
 
     // Mobile FAB quick menu + theme
     const mobileFab=$('#mobileFab'), fabPanel=$('#fabPanel'), fabTheme=$('#fabTheme');
@@ -649,12 +631,13 @@
     // Nav scroll spy + indicator
     const navLinks=$$('#navlinks a'), navIndicator=$('#navIndicator'), sections=$$('#home,#profile,#experience,#skills,#projects,#education,#leadership,#contact');
     function updateActive(){
-      const y=scrollY+140; let current=sections[0].id;
+      const y=scrollY+parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--navH'))+60;
+      let current=sections[0].id;
       sections.forEach(s=>{ const top=s.getBoundingClientRect().top+scrollY; if(y>=top) current=s.id });
       navLinks.forEach(a=>a.classList.toggle('active', a.getAttribute('href')==='#'+current));
       const active=$$('#navlinks a.active')[0]; if(active){ const r=active.getBoundingClientRect(), c=$('#navlinks').getBoundingClientRect(); navIndicator.style.width=r.width+'px'; navIndicator.style.transform=`translateX(${r.left-c.left}px)` }
     }
-    document.addEventListener('scroll',updateActive,{passive:true}); addEventListener('resize',updateActive); updateActive();
+    document.addEventListener('scroll',updateActive,{passive:true}); addEventListener('resize',()=>{ setNavHeight(); updateActive(); }); updateActive();
 
     // Hover highlight that follows cursor (for pop)
     const popEls = $$('.panel, .card, .tl-card, .contact-item');
